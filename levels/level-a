@@ -1,0 +1,19 @@
+# : Starting Lighthouse
++ : Any-to-One Lighthorse
+o : Boat
+~ : Cloud (any light stopper)
+
+Simple Trick Level:
+Obvious solution is not correct.
+=============
+    +    +
+
+   +   o
+
+ + o o     +
+
+   +
+    o
+
+      #
+=============
