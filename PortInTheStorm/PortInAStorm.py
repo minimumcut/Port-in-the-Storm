@@ -9,7 +9,7 @@ from Level import LevelProperties
 def main():
     pygame.init()
 
-    size = (640, 480)
+    size = (1280, 704)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Port in a Storm")
 
