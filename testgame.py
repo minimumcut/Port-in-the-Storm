@@ -1,5 +1,7 @@
 # Import the pygame library and initialise the game engine
 import pygame
+from pytmx.util_pygame import load_pygame
+
 pygame.init()
 
 # Define some colors
