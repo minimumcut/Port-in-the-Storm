@@ -28,6 +28,7 @@ class Game:
         self.region_data.region_entities_grid = list(repeat(list(repeat(None, self.current_level.width)), self.current_level.height))
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
+        self.UpdateTowerStates()
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
@@ -35,6 +36,7 @@ class Game:
         self.region_data = RegionData()
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
+        self.UpdateTowerStates()
 
     # This method iterates over the game map only once to create sprites based on the property 'sprite_type'
     # sprite_types can be:
@@ -51,11 +53,11 @@ class Game:
                     properties = game_map.get_tile_properties(x, y, 0)
                     if properties:
                         if properties['sprite_type'] == "lighthouse":
-                            towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
+                            towerEntity = CreateDefaultForwarderTower(x, y, self.region_data)
                             self.all_sprites.add(towerEntity.sprite)
                             continue
                         if properties['sprite_type'] == "main":
-                            towerEntity = CreateDefaultRecieverTower(x, y, self.region_data)
+                            towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
                             self.all_sprites.add(towerEntity.sprite)
                             continue
 
@@ -85,19 +87,22 @@ class Game:
         # render all the sprites
         self.all_sprites.draw(screen)
 
+        #import pdb; pdb.set_trace()
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
         RenderPostFX.RenderVignette(screen)
         pygame.display.flip()
 
     
-    def PostChangeTowerState(self, tower):
+    def UpdateTowerStates(self):
         # fuck it O(N^3) baby
-        for tower in region_entities:
-            tower.is_powered = false 
+        for tower in self.region_data.region_entities:
+            tower.is_powered = False
 
-        for fuck_you in self.region_entities:
-            DetermineTowersBeamIntersect(towers)
+        self.region_data.region_beams = [] 
+
+        for fuck_you in self.region_data.region_entities:
+            self.DetermineTowersBeamIntersect(self.region_data.region_entities)
 
     def GameTick(self):
         pass
@@ -105,23 +110,25 @@ class Game:
     def OnIntersect(self, tower, origin, intersect_angle):
         tower.isPowered = True
         # Create the beam
-        beam_type = BeamType((255,255,255), 5, 5, 5) 
-        new_beam = Beam(origin.x, origin.y, tower.x, tower.y, beam_type)
-        region_beams.append(new_beam)
+        beam_type = Beam.BeamType((255,255,255), 5, 5, 5) 
+        new_beam = Beam.Beam(origin.x, origin.y, tower.x, tower.y, beam_type)
+        self.region_data.region_beams.append(new_beam)
 
     def DetermineTowersBeamIntersect(self, towers):
         for tower in towers:
             x = tower.x
             y = tower.y
+            origin = Coord(x, y)
             emitter_list = tower.tower_type.light_emitters
             for emitter in emitter_list:
-                intersect = DetermineBeamIntersect(x, y, emitter.angle)
-                OnIntersect(tower, origin, emitter.angle)
+                
+                intersect = self.DetermineBeamIntersect(x, y, emitter.angle)
+                self.OnIntersect(tower, origin, emitter.angle)
                 
             if tower.is_powered:
                 fowarder_list = tower.tower_type.light_forwarders
                 for forwarder in forwarder_list:
-                    intersect = DetermineBeamIntersect(x, y, forwarder.angle)
+                    intersect = self.DetermineBeamIntersect(x, y, forwarder.angle)
                     OnIntersect(tower, origin, forwarder.angle)
             
 
@@ -152,13 +159,17 @@ class Game:
             dx = -1
             dy = 1
         
-        while  x > 0 and x < self.current_level.width and y > 0 and y < self.current_level.heights:
-            x = x + dx
-            y = y + dy
+        #print("HI")
+        #print(self.current_level.width)
+        #print(self.current_level.height)
+        print(len(self.region_data.region_entities_grid))
 
-            if region_entities_grid[x][y] != None:
+        while x > 0 and x < self.current_level.width and y > 0 and y < self.current_level.height:
+            if self.region_data.region_entities_grid[x][y] != None:
                 return Coord(x,y)
         
+            x = x + dx
+            y = y + dy
         return None
         
     

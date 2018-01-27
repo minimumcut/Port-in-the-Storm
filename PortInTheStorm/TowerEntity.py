@@ -47,7 +47,7 @@ def CreateDefaultRecieverTower(x, y, region_data):
     return towerEntity
 
 class TowerType:
-    def __init__(self, light_recievers, light_emitters, light_forwarders, initial_rotation):
+    def __init__(self, light_emitters, light_recievers, light_forwarders, initial_rotation):
         self.light_recievers = light_recievers
         self.light_emitters = light_emitters
         self.light_forwarders = light_forwarders
