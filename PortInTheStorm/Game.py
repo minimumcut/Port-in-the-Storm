@@ -1,6 +1,7 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
+import RenderPostFX
 from pytmx import load_pygame
 
 class RegionData:
@@ -36,6 +37,8 @@ class Game:
                     for y in range(0, 20):
                         pygame_surface = game_map.get_tile_image(x, y, 0)
                         screen.blit(pygame_surface, (32*x, 32*y))
+                        
+        RenderPostFX.RenderVignette(screen)
         pygame.display.flip()
 
     def GameTick(self):
