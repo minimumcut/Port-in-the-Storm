@@ -16,7 +16,7 @@ def main():
     clock = pygame.time.Clock()
 
     levelProps = LevelProperties("Test level", 1)
-    initialLevel = Level(levelProps, 10, 10, [], "test.tmx")
+    initialLevel = Level(levelProps, 30, 30, [], "test.tmx") # hardcoding rip
     game = Game(initialLevel)
 
     # --- Main event loop
