@@ -2,6 +2,8 @@
 import pygame
 import pytmx
 import RenderPostFX
+import BeamRenderer
+import Beam
 from pytmx import load_pygame
 
 class RegionData:
@@ -39,6 +41,12 @@ class Game:
                         screen.blit(pygame_surface, (32*x, 32*y))
                         
         RenderPostFX.RenderVignette(screen)
+        
+        # Test rendering beam
+        beamProps = Beam.BeamType((255,255,255), 3, 10, 10)
+        beam = Beam.Beam(0, 0, 250, 250, beamProps)
+        BeamRenderer.RenderBeams(screen, [beam])
+
         pygame.display.flip()
 
     def GameTick(self):

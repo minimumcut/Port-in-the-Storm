@@ -14,8 +14,8 @@ class BeamType:
 
 class Beam:
     def __init__(self, x_origin, y_origin, x_dest, y_dest, beamType):
-        self.x = x_origin
-        self.y = y_origin
+        self.x_origin = x_origin
+        self.y_origin = y_origin
         self.x_dest = y_dest
         self.y_dest = y_dest
         self.beamType = beamType
