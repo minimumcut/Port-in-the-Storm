@@ -23,7 +23,7 @@ def main():
     while True:
         if not game.HandleInputEvents():
             break
-        
+
         game.GameTick()
         game.Render(screen)
         

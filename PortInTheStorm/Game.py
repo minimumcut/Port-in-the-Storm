@@ -1,6 +1,7 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
+import RenderPostFX
 from pytmx import load_pygame
 from TowerEntity import CreateDefaultTowerEntity
 
@@ -66,6 +67,7 @@ class Game:
         # render all the sprites
         self.all_sprites.draw(screen)
 
+        RenderPostFX.RenderVignette(screen)
         pygame.display.flip()
 
     def GameTick(self):
