@@ -45,8 +45,8 @@ while carryOn:
         # --- Game logic should go here
 
         for layer in gameMap.visible_layers:
-            for x in range(0, 19):
-                for y in range(0, 19):
+            for x in range(0, 20):
+                for y in range(0, 20):
                     pygame_surface = gameMap.get_tile_image(x, y, 0)
                     # import pdb; pdb.set_trace()
                     screen.blit(pygame_surface, (32*x, 32*y))
