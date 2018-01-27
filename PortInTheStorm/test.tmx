@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1">
  <tileset firstgid="1" source="tileset/grass-tile-2-small.tsx"/>
- <tileset firstgid="73" source="tileset/grass-tile-2-small.tsx"/>
  <layer name="Tile Layer 1" width="20" height="20">
   <data encoding="csv">
 49,50,51,49,50,51,49,50,51,49,50,51,49,50,51,49,50,51,49,50,
