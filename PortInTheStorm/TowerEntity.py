@@ -4,14 +4,14 @@ import pytmx
 from pytmx import load_pygame
 
 class TowerType:
-    def __init__(self, enabled_light_reciever_angles, enabled_light_transmittor_angles, initial_rotation):
+    def __init__(self, enabled_light_reciever_angles, enabled_light_transmittor_angles, initial_rotation, is_reciever):
         self.enabled_light_reciever_angles = enabled_light_reciever_angles
         self.enabled_light_transmittor_angles = enabled_light_transmittor_angles
         self.initial_rotation = initial_rotation
         
 class TowerEntity:
-    def __init__(self, x, y, towerType):
+    def __init__(self, x, y, tower_type):
         self.x = x
         self.y = y
-        self.towerType = towerType
+        self.tower_type = tower_type
 

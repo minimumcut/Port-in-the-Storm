@@ -34,6 +34,7 @@ while carryOn:
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
                 carryOn = False # Flag that we are done so we exit this loop
+                
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                 carryOn = False
@@ -51,7 +52,7 @@ while carryOn:
                     # import pdb; pdb.set_trace()
                     screen.blit(pygame_surface, (32*x, 32*y))
 
-
+        
         # --- Drawing code should go here
         # First, clear the screen to white.
         # screen.fill(WHITE)
