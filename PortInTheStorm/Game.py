@@ -3,10 +3,16 @@ import pygame
 import pytmx
 from pytmx import load_pygame
 
+class RegionData:
+    def __init__(self):
+        self.region_entities = []
+
 class Game:
     def __init__(self, initial_level):
+        print("Loading level " + initial_level.level_properties.level_name)
         initial_level.load()
         self.current_level = initial_level
+        self.region_data = RegionData()        
 
     # Returns false 
     def HandleInputEvents(self):
