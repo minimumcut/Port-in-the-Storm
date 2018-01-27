@@ -27,6 +27,6 @@ class TowerEntity:
         self.y = y
         self.tower_type = tower_type
         # pos is placeholder
-        self.sprite = Sprite(pos=0, frames=[[pygame.image.load('sprites/whitesprite.png')]])
+        self.sprite = Sprite(pos=0, angle=0, frames=[[pygame.image.load('sprites/whitesprite.png')]])
         self.sprite.rect.x = x*32
         self.sprite.rect.y = y*32

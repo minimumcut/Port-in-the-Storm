@@ -41,6 +41,14 @@ class Game:
                             self.all_sprites.add(towerEntity.sprite)
                             continue
 
+    def RotateClickedSprites(self, clicked_sprites, counterclockwise=True):
+        if counterclockwise:
+            rot = 45
+        else:
+            rot = -45
+        for sprite in clicked_sprites:
+            sprite.rotate_frames(rot)
+
     # Returns false
     def HandleInputEvents(self):
         for event in pygame.event.get():
@@ -54,6 +62,17 @@ class Game:
                     print("w pressed")
                 if event.key == pygame.K_a:
                     print("w pressed")
+            if event.type == pygame.MOUSEBUTTONUP:
+                # 1 - left click - rotate counterclockwise
+                # 3 - right click - rotate counterclockwise
+                pos = pygame.mouse.get_pos()
+                # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
+                clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
+                if (event.button == 1):
+                    self.RotateClickedSprites(clicked_sprites, True)
+                if (event.button == 3):
+                    self.RotateClickedSprites(clicked_sprites, False)
+
         return True
 
     def Render(self, screen):
