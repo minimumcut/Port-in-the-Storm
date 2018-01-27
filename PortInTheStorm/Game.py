@@ -10,6 +10,7 @@ from TowerEntity import CreateDefaultTowerEntity
 class RegionData:
     def __init__(self):
         self.region_entities = []
+        self.region_beams = []
 
 class Game:
     def __init__(self, initial_level):
@@ -69,13 +70,9 @@ class Game:
         # render all the sprites
         self.all_sprites.draw(screen)
 
-        RenderPostFX.RenderVignette(screen)
-        
-        # Test rendering beam
-        beamProps = Beam.BeamType((255,255,255), 3, 10, 10)
-        beam = Beam.Beam(0, 0, 250, 250, beamProps)
-        BeamRenderer.RenderBeams(screen, [beam])
+        BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
+        RenderPostFX.RenderVignette(screen)
         pygame.display.flip()
 
     def GameTick(self):
