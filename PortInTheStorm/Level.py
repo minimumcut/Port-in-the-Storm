@@ -3,10 +3,6 @@ import pygame
 import pytmx
 from pytmx import load_pygame
 
-def LoadLevel(Level):
-    level.loaded_sprite_map = load_pygame("test.tmx")
-    level.loaded = true
-
 class LevelProperties:
     def __init__(self, level_name, level_number):
         self.level_name = level_name
@@ -14,7 +10,6 @@ class LevelProperties:
 
 class Level:
     def __init__(self, level_properties, width, height, tower_list, sprite_map):
-        self.color = color
         self.width = width 
         self.height = height
         self.tower_list = tower_list
@@ -28,10 +23,9 @@ class Level:
         for layer in gameMap.visible_layers:
             for x in range(0, width):
                 for y in range(0, height):
-                    pygame_surface = gameMap.get_tile_image(x, y, 0)
+                    pygame_surface = loaded_sprite_map.get_tile_image(x, y, 0)
                     screen.blit(pygame_surface, (32*x, 32*y))
-
-    def draw_towers(self, pygame_screen):
-        for tower in tower_list:
-            tower_type = tower.tower_type
-            # screen.blit(pygame_surface, (32*x, 32*y))
+                    
+    def load(self):
+        self.loaded_sprite_map = load_pygame(self.sprite_map)
+        self.loaded = True

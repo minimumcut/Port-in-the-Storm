@@ -10,7 +10,7 @@ class TowerType:
         self.initial_rotation = initial_rotation
         
 class TowerEntity:
-    def __init__(self, x, y, tower_type):
+    def __init__(self, x, y, state, tower_type):
         self.x = x
         self.y = y
         self.tower_type = tower_type
