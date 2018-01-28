@@ -63,7 +63,16 @@ class Game:
         self.dialog_data.dialog_cmd_list = self.current_level.loaded_pre_level_dialog
         if self.dialog_data.dialog_cmd_list != None:
             self.advance_dialog() 
-            
+        self.InitMusic()
+
+    def InitMusic(self):
+        playlist = list()
+        playlist.append ("music/debussy.mp3")
+        
+        # play some avante garde music FOREVER (the ride never ends)
+        pygame.mixer.music.load(playlist.pop())  
+        pygame.mixer.music.set_endevent(pygame.USEREVENT)  
+        pygame.mixer.music.play(-1)
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
