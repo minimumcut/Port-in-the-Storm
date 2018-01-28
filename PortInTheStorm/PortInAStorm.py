@@ -18,7 +18,7 @@ def main():
     clock = pygame.time.Clock()
 
     levelProps = LevelProperties("Test level", 1)
-    initialLevel = Level(levelProps, 15, 11, [], "test.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    initialLevel = Level(levelProps, 15, 11, [], "levels/level1.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
     
     levelProps2 = LevelProperties("Test level", 1)
     initialLevel2 = Level(levelProps2, 15, 11, [], "levels/001.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip

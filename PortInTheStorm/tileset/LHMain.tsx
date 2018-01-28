@@ -4,4 +4,9 @@
   <property name="sprite_type" value="main"/>
  </properties>
  <image source="../sprites/LHMain/LHMain.png" width="192" height="192"/>
+ <tile id="4">
+  <properties>
+   <property name="sprite_type" value="main"/>
+  </properties>
+ </tile>
 </tileset>
