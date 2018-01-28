@@ -1,6 +1,7 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
+import DialogParser
 from pytmx import load_pygame
 
 class LevelProperties:
@@ -9,12 +10,13 @@ class LevelProperties:
         self.level_number = level_number 
 
 class Level:
-    def __init__(self, level_properties, width, height, tower_list, sprite_map):
+    def __init__(self, level_properties, width, height, tower_list, sprite_map, post_level_dialog=None):
         self.width = width 
         self.height = height
         self.tower_list = tower_list
         self.sprite_map = sprite_map
         self.level_properties = level_properties 
+        self.post_level_dialog = post_level_dialog
 
     def draw_base_layer(self, pygame_screen):
         if not loaded:
@@ -29,3 +31,5 @@ class Level:
     def load(self):
         self.loaded_sprite_map = load_pygame(self.sprite_map)
         self.loaded = True
+        if self.post_level_dialog != None:
+            DialogParser.Parse(self.post_level_dialog)
