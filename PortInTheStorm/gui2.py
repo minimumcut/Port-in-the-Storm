@@ -1,5 +1,5 @@
+
 import sys, pygame, os, time, random
-from Constants import RESOLUTION_X, RESOLUTION_Y
 from math import pi
 
 print (os.getcwd())
@@ -15,7 +15,7 @@ GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
 
 # Set the height and width of the screen
-size = [RESOLUTION_X, RESOLUTION_Y]
+size = [1280, 704]
 screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  
@@ -40,9 +40,10 @@ while not done:
      
     # Clear the screen and set the screen background and import images
     #background must draw at first
-    background = pygame.image.load('background.png').convert()
-    buttonStart = pygame.image.load('example.jpg').convert()
-    #buttonQuit = pygame.image.load(
+    background = pygame.image.load('background.png')
+    buttonStartIdle = pygame.image.load('buttonIdle.png')
+    buttonStartHover = pygame.image.load('buttonHover.png')
+    buttonStartClick = pygame.image.load('buttonClick.png')
 
 
     screen.blit(background, [0,0])
@@ -66,27 +67,35 @@ while not done:
 
 
     
-    def button(msg,x,y,w,h,picture,action):
+    def button(msg,x,y,w,h,pictureIdle,pictureHover,pictureClick,action):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         #print(click)
-        #print(mouse)
-        if x+w > mouse[0] > x and y+h > mouse[1]:
-            #selected button
-            screen.blit(picture,(x,y,w,h))
+        print(mouse)
+        if x+w > mouse[0] > x and y+h > mouse[1] > y:
+            #hover button
+            print("Hover")
+            screen.blit(pictureHover,(x,y,w,h))
             if click[0] == 1:
                 #pressed button
-                print(msg,x,y,w,h)
+                #print(msg,x,y,w,h)
+                screen.blit(pictureClick,(x,y,w,h))
                 action()
-        #Normal button
+        #Idle button
+                
         else:
-            print("no click")
-            pygame.draw.rect(screen, BLUE,(x,y,w,h))
+            #print("no click")
+            screen.blit(pictureIdle,(x,y,w,h))
 
         pixelText = pygame.font.Font("BACKTO1982.ttf",20)
         textSurf, textRect = text_objects(msg, pixelText)
         textRect.center = ( (x+(w/2)), (y+(h/2)) )
         screen.blit(textSurf, textRect)
+
+
+
+
+        
 
     def text_objects(text, font):
         textSurface = font.render(text, True, BLACK)
@@ -96,25 +105,18 @@ while not done:
         if lis[0] + lis[2] > lis[0] > lis[0] and lis[1] + lis[3] > mouse[1] > lis[3]:
             return True
         else:
-            return False
-
-    #def flash(obj):
+            return False 
         
-
+    
     def highlighter(colorTup):
         light_list = [x+25 for x in list(colorTup)]
         vaild_list = [max(min(x, 255), 0) for x in light_list]       
         return tuple(vaild_list)
     
-    button("START",320, 500, 100, 50, buttonStart,start)
-    #button("QUIT",640, 500, 100, 50, RED,highlighter(BLUE),quit)
-    #button("LEVEL",960, 500,100,50, RED,highlighter(BLUE),levelSelect)
+    button("START",220, 500, 200, 100, buttonStartIdle,buttonStartHover,buttonStartClick,start)
+    button("QUIT",540, 500, 200, 100, buttonStartIdle,buttonStartHover,buttonStartClick,quit)
+    button("LEVEL",860, 500,200,100, buttonStartIdle,buttonStartHover,buttonStartClick,levelSelect)
     
-
-
-
-
-
 
 
 
