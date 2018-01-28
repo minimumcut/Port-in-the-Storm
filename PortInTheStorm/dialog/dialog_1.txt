@@ -1,5 +1,0 @@
-; char_goose_neutral.png char_goose_neutral.png
-hello
-fun
-adf
-; char_goose_neutral.png cat.png

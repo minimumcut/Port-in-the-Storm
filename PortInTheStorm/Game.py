@@ -202,8 +202,6 @@ class Game:
             # adding back the first emitter, and then updating tower states
             self.UpdateTowerStates()
             self.region_data.light_on = True
-            self.CheckIfAllShipsPowered()
-
 
     def render_character_sprite(self, surface):
         if self.dialog_data.show_dialogue_box:
@@ -263,7 +261,7 @@ class Game:
 
         pygame.display.flip()
 
-    def WinLevel():
+    def WinLevel(self):
         self.region_data.victory = True
         self.dialog_data.dialog_cmd_list = self.current_level.loaded_post_level_dialog
         if self.dialog_data.dialog_cmd_list != None:
@@ -272,9 +270,11 @@ class Game:
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:
             if not ship.is_powered:
+                #import pdb; pdb.set_trace()
                 print("ships arent fully powered yet")
                 return False
         print("ships are powered!!! Done level")
+        #import pdb; pdb.set_trace()
         self.WinLevel()
         return True
 
@@ -287,6 +287,8 @@ class Game:
 
         for fuck_you in self.region_data.region_entities:
             self.DetermineTowersBeamIntersect(self.region_data.region_entities)
+        self.CheckIfAllShipsPowered()
+        
 
     def GameTick(self):
         pass
