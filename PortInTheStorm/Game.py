@@ -14,12 +14,11 @@ from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, 
 
 pygame.font.init()
 
-goose = pygame.image.load("sprites/char_goose_neutral.png")
-
 DIALOGUE_BOX_RECT = (80, 500, 1120, 150)
 TEXT_BOX_RECT = (120, 520, 1000, 110)
 LEFT_CHARACTER_SPRITE_POS = (120, 300) 
 RIGHT_CHARACTER_SPRITE_POS = (800, 300) 
+from enum import Enum
 
 class Coord:
     def __init__(self, x, y):
@@ -34,6 +33,7 @@ class RegionData:
         self.main_tower = None
         self.light_on = False
         self.ships = []
+        self.victory = False
 
 class DialogData:
     def __init__(self):
@@ -60,8 +60,19 @@ class Game:
         self.initialize_lighthouses()
         # self.UpdateTowerStates()
         self.dialog_data = DialogData()
-        self.dialog_data.dialog_cmd_list = self.current_level.post_level_dialog
+        self.dialog_data.dialog_cmd_list = self.current_level.loaded_pre_level_dialog
+        if self.dialog_data.dialog_cmd_list != None:
+            self.advance_dialog() 
+        self.InitMusic()
+
+    def InitMusic(self):
+        playlist = list()
+        playlist.append ("music/debussy.mp3")
         
+        # play some avante garde music FOREVER (the ride never ends)
+        pygame.mixer.music.load(playlist.pop())  
+        pygame.mixer.music.set_endevent(pygame.USEREVENT)  
+        pygame.mixer.music.play(-1)
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
@@ -109,9 +120,28 @@ class Game:
                             SetUpCloudSprite(x,y,towerEntity)
                             self.all_sprites.add(towerEntity.sprite)
                             continue
-
-    def advance_dialog(self):
+    
+    def dialog_finshed(self):
+        self.hide_dialogue_box()
         pass
+    
+    def advance_dialog(self):
+        if(len(self.dialog_data.dialog_cmd_list) == 0):
+            self.dialog_finshed()
+            return
+
+        dialog = self.dialog_data.dialog_cmd_list[0]
+        self.dialog_data.dialog_cmd_list = self.dialog_data.dialog_cmd_list[1:]
+
+        #import pdb; pdb.set_trace()
+        if dialog.type == "Character":
+            l_char=pygame.image.load(dialog.left_character)
+            r_char=pygame.image.load(dialog.right_character)
+            self.set_character(l_char, r_char)
+            self.advance_dialog()
+
+        if dialog.type == "Dialog":
+            self.set_dialogue(dialog.text)
 
     def set_character(self, left_character, right_character):
         self.dialog_data.current_left_sprite = left_character
@@ -121,7 +151,7 @@ class Game:
         self.dialog_data.show_dialogue_box = True
         self.dialog_data.current_dialogue = text
 
-    def hide_dialogue_box():
+    def hide_dialogue_box(self):
         self.dialog_data.show_dialogue_box = False
         self.dialog_data.current_left_sprite = None
         self.dialog_data.current_right_sprite = None
@@ -185,11 +215,13 @@ class Game:
 
 
     def render_character_sprite(self, surface):
-        if self.dialog_data.current_left_sprite != None:
-           surface.blit(goose, LEFT_CHARACTER_SPRITE_POS)
+        if self.dialog_data.show_dialogue_box:
+            RenderPostFX.RenderScreenMask(surface)
+        if self.dialog_data.show_dialogue_box and self.dialog_data.current_left_sprite != None:
+           surface.blit(self.dialog_data.current_left_sprite, LEFT_CHARACTER_SPRITE_POS)
 
-        if self.dialog_data.current_right_sprite != None:
-           surface.blit(goose, RIGHT_CHARACTER_SPRITE_POS)
+        if self.dialog_data.show_dialogue_box and self.dialog_data.current_right_sprite != None:
+           surface.blit(self.dialog_data.current_right_sprite, RIGHT_CHARACTER_SPRITE_POS)
 
     # Returns false
     def HandleInputEvents(self):
@@ -202,10 +234,6 @@ class Game:
                     return False
                 if event.key == pygame.K_q or event.key == pygame.K_SPACE:
                     self.ToggleLight()
-                if event.key == pygame.K_w:
-                    self.dialog_data.show_dialogue_box = not self.dialog_data.show_dialogue_box
-                if event.key == pygame.K_a:
-                    print("w pressed")
             if event.type == pygame.MOUSEBUTTONUP:
                 print("mouse", pygame.mouse.get_pos())
                 if self.dialog_data.show_dialogue_box:

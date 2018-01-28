@@ -2,3 +2,4 @@
 hello
 fun
 adf
+; char_goose_neutral.png cat.png

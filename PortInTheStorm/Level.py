@@ -11,12 +11,13 @@ class LevelProperties:
         self.level_number = level_number 
 
 class Level:
-    def __init__(self, level_properties, width, height, tower_list, sprite_map, post_level_dialog=None):
+    def __init__(self, level_properties, width, height, tower_list, sprite_map, pre_level_dialog=None, post_level_dialog=None):
         self.width = width 
         self.height = height
         self.tower_list = tower_list
         self.sprite_map = sprite_map
         self.level_properties = level_properties 
+        self.pre_level_dialog = pre_level_dialog
         self.post_level_dialog = post_level_dialog
 
     def draw_base_layer(self, pygame_screen):
@@ -33,4 +34,7 @@ class Level:
         self.loaded_sprite_map = load_pygame(self.sprite_map)
         self.loaded = True
         if self.post_level_dialog != None:
-            DialogParser.Parse(self.post_level_dialog)
+            self.loaded_post_level_dialog = DialogParser.Parse(self.post_level_dialog)
+        if self.pre_level_dialog != None:
+            self.loaded_pre_level_dialog = DialogParser.Parse(self.pre_level_dialog)
+            
