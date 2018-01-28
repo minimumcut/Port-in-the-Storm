@@ -61,12 +61,12 @@ class Game:
 
     def InitMusic(self):
         playlist = list()
-        playlist.append ("music/debussy.mp3")
+        playlist.append ("music/PortInTheStormTheme(Moody).wav")
 
         # play some avante garde music FOREVER (the ride never ends)
-        # pygame.mixer.music.load(playlist.pop())  
-        # pygame.mixer.music.set_endevent(pygame.USEREVENT)  
-        # pygame.mixer.music.play(-1)
+        pygame.mixer.music.load(playlist.pop())  
+        pygame.mixer.music.set_endevent(pygame.USEREVENT)  
+        pygame.mixer.music.play(-1)
 
     def TransitionLevel(self):
         if(self.level_list == 0):
