@@ -1,6 +1,6 @@
 ; l.png r.png
 Welcome to port in the storm
 You play as a lighthouse watchman
-; 1.png r.png
+; l.png r.png
 and must guide ships to the port
 and they are in a storm yes
