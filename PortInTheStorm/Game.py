@@ -82,8 +82,8 @@ class Game:
     def initialize_lighthouses(self):
         game_map = self.current_level.loaded_sprite_map
         for layer in game_map.visible_layers:
-            for x in range(0, 20):
-                for y in range(0, 20):
+            for x in range(0, 15):
+                for y in range(0, 15):
                     properties = game_map.get_tile_properties(x, y, 0)
                     if properties:
                         if properties['sprite_type'] == "lighthouse":
@@ -207,6 +207,7 @@ class Game:
                 if event.key == pygame.K_a:
                     print("w pressed")
             if event.type == pygame.MOUSEBUTTONUP:
+                print("mouse", pygame.mouse.get_pos())
                 if self.dialog_data.show_dialogue_box:
                     self.advance_dialog()
                 else:
@@ -225,8 +226,8 @@ class Game:
     def Render(self, screen):
         game_map = self.current_level.loaded_sprite_map
         for layer in game_map.visible_layers:
-                for x in range(0, 20):
-                    for y in range(0, 20):
+                for x in range(0, 15):
+                    for y in range(0, 15):
                         pygame_surface = game_map.get_tile_image(x, y, 0)
                         screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
 

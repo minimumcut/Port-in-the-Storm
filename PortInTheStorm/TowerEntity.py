@@ -101,9 +101,9 @@ class TowerEntity:
         self.y = y
         self.tower_type = tower_type
         # pos is placeholder
-        self.sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/tower.png')]])
+        self.sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/lighthouse/LH1.png')]])
         self.sprite.rect.x = x*PIXEL_RESOLUTION
         self.sprite.rect.y = y*PIXEL_RESOLUTION
-        self.light_sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/light.png')]], can_rotate=True)
+        self.light_sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/lighthouse/weakstraight1.png')]], can_rotate=True)
         self.light_sprite.rect.x = x*PIXEL_RESOLUTION
         self.light_sprite.rect.y = y*PIXEL_RESOLUTION
