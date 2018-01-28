@@ -29,6 +29,7 @@ def CreateDefaultEmitterTower(x, y, region_data):
     towerType = TowerType(DEFAULT_LIGHT_EMITTERS, [], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
+    print("Ceated emitter at: " + str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
     return towerEntity
 
@@ -36,6 +37,7 @@ def CreateDefaultForwarderTower(x, y, region_data):
     towerType = TowerType([], DEFAULT_LIGHT_FORWARDER, [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
+    print("Ceated forwarder at: " +  str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
     return towerEntity
 
@@ -43,6 +45,7 @@ def CreateDefaultRecieverTower(x, y, region_data):
     towerType = TowerType([], [], DEFAULT_LIGHT_RECIEVER_ANGLES, 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
+    print("Ceated forwarder at: " +  str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
     return towerEntity
 

@@ -25,7 +25,10 @@ class Game:
         initial_level.load()
         self.current_level = initial_level
         self.region_data = RegionData()
-        self.region_data.region_entities_grid = list(repeat(list(repeat(None, self.current_level.width)), self.current_level.height))
+        self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
+        for i in range(0, self.current_level.height):
+            self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
+
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
         self.UpdateTowerStates()
@@ -169,12 +172,13 @@ class Game:
 
         x = x + dx
         y = y + dy
+        
         while x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
             if self.region_data.region_entities_grid[x][y] != None:
+                print("Encountered collision at: " + str(x) + " " + str(y))
                 return Coord(x,y)
         
             x = x + dx
             y = y + dy
-        return None
-        
-    
+
+        return Coord(x,y)
