@@ -69,16 +69,20 @@ class TowerType:
         self.light_forwarders = light_forwarders
         self.initial_rotation = initial_rotation
         self.is_passable = is_passable
-    def rotate_light(self):
+    def rotate_light(self, counter_clockwise=True):
         print("rotating light")
         #assuming that everytime this is called, it rotates by 45 degrees clockwise
+        if counter_clockwise:
+            dx = 1
+        else:
+            dx = -1
         for rcv in self.light_recievers:
-            rcv.angle = (rcv.angle + 1) % 8
+            rcv.angle = (rcv.angle + dx) % 8
         for emitter in self.light_emitters:
-            emitter.angle = (emitter.angle + 1) % 8
+            emitter.angle = (emitter.angle + dx) % 8
             print("emitter angle: ", emitter.angle)
         for fwd in self.light_forwarders:
-            fwd.angle = (fwd.angle + 1) % 8
+            fwd.angle = (fwd.angle + dx) % 8
             print("fwd angle: ", fwd.angle)
 
 

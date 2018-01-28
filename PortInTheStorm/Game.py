@@ -107,15 +107,18 @@ class Game:
     def hide_dialogue_box():
         pass
 
-    def RotateClickedSprites(self, clicked_sprites):
-        # print("rotating clicked sprites", len(clicked_sprites))
+    def RotateClickedSprites(self, clicked_sprites, counter_clockwise=True):
+        if counter_clockwise:
+            angle = 45
+        else:
+            angle = -45
         for sprite in clicked_sprites:
             # rotates the sprite, and also updates the tower type's to point in the right direction
             if sprite.can_rotate:
                 print("a sprite will rotate at ", sprite.x, sprite.y)
-                sprite.rotate_frames(45)
+                sprite.rotate_frames(angle)
                 # import pdb; pdb.set_trace()
-                self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
+                self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light(counter_clockwise)
 
     def render_dialogue_box(self, surface):
         if not self.dialog_data.show_dialogue_box:
@@ -190,7 +193,12 @@ class Game:
                 self.TurnOffLights()
                 pos = pygame.mouse.get_pos()
                 clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos) and s.can_rotate]
-                self.RotateClickedSprites(clicked_sprites)
+                # event.button == 1 left click
+                if event.button == 1:
+                    self.RotateClickedSprites(clicked_sprites)
+                    # event.button == 3 right click
+                elif event.button == 3:
+                    self.RotateClickedSprites(clicked_sprites, False)
         return True
 
     def Render(self, screen):
