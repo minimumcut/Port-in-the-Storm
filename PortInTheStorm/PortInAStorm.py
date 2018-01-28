@@ -19,7 +19,14 @@ def main():
 
     levelProps = LevelProperties("Test level", 1)
     initialLevel = Level(levelProps, 30, 30, [], "test.tmx", "dialog/dialog_test.txt", "dialog/dialog_test.txt") # hardcoding rip
-    game = Game(initialLevel)
+    
+    levelProps2 = LevelProperties("Test level", 1)
+    initialLevel2 = Level(levelProps2, 30, 30, [], "test.tmx", "dialog/dialog_test.txt", "dialog/dialog_test.txt") # hardcoding rip
+    
+    levelProps3 = LevelProperties("Test level", 1)
+    initialLevel3 = Level(levelProps3, 30, 30, [], "test.tmx", "dialog/dialog_test.txt", "dialog/dialog_test.txt") # hardcoding rip
+
+    game = Game([initialLevel, initialLevel2, initialLevel3])
 
     # --- Main event loop
     while True:
