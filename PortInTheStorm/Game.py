@@ -69,6 +69,9 @@ class Game:
         # pygame.mixer.music.play(-1)
 
     def TransitionLevel(self):
+        if(self.level_list == 0):
+            print("You win!")
+
         next_level = self.level_list[0]
         self.level_list = self.level_list[1:]
         next_level.load()
@@ -184,7 +187,6 @@ class Game:
         for sprite in clicked_sprites:
             # rotates the sprite, and also updates the tower type's to point in the right direction
             if sprite.can_rotate:
-                print("a sprite will rotate at ", sprite.x, sprite.y)
                 sprite.rotate_frames(angle)
                 # import pdb; pdb.set_trace()
                 self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light(counter_clockwise)
@@ -222,7 +224,6 @@ class Game:
         self.region_data.light_on = False
 
     def ToggleLight(self):
-        print("space pressed")
         if self.region_data.light_on:
             # its on, turning it off
             self.TurnOffLights()
@@ -253,7 +254,6 @@ class Game:
                 if event.key == pygame.K_q or event.key == pygame.K_SPACE:
                     self.ToggleLight()
             if event.type == pygame.MOUSEBUTTONUP:
-                print("mouse", pygame.mouse.get_pos())
                 if self.dialog_data.show_dialogue_box:
                     self.advance_dialog()
                 else:
@@ -305,10 +305,8 @@ class Game:
             if not ship.is_powered:
                 self.region_data.beam_countdown = 15
                 #import pdb; pdb.set_trace()
-                print("ships arent fully powered yet")
                 return False
         if self.region_data.beam_countdown == 0:
-            print("ships are powered!!! Done level")
             #import pdb; pdb.set_trace()
             self.WinLevel()
             return True
@@ -391,11 +389,6 @@ class Game:
             dx = -1
             dy = 1
         
-        #print("HI")
-        #print(self.current_level.width)
-        #print(self.current_level.height)
-        print(len(self.region_data.region_entities_grid))
-
         x = x + dx
         y = y + dy
         
@@ -404,7 +397,6 @@ class Game:
                 if self.region_data.region_entities_grid[x][y].tower_type.is_passable:
                     self.region_data.region_entities_grid[x][y].is_powered = True
                 else:
-                    print("Encountered collision at: " + str(x) + " " + str(y))
                     return Coord(x,y)
         
             x = x + dx
