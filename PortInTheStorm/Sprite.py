@@ -6,7 +6,7 @@ class Sprite(pygame.sprite.Sprite):
         # current frames will be the ones being animated
         # original frames will be stored to prevent data loss when rotating
         super(Sprite, self).__init__()
-        self.frames = frames
+        self.frames = frames.copy()
         self.current_frames = self.frames.copy()
         self.animation = self.stand_animation()
         self.image = frames[0][0]
@@ -30,7 +30,7 @@ class Sprite(pygame.sprite.Sprite):
         if not self.can_rotate:
             return
         self.angle = (self.angle + angle) % 360
-        print(self.angle)
+        print("sprite angle: ", self.angle)
         new_frames = []
         for frame in self.frames[0]:
             new_frames.append(self.rotate_along_center(frame, self.angle))

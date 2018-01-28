@@ -6,7 +6,7 @@ import BeamRenderer
 import Beam
 import TowerEntityRenderer
 from pytmx import load_pygame
-from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
+from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType
 from itertools import repeat
 
 pygame.font.init()
@@ -17,13 +17,15 @@ TEXT_BOX_RECT = (120, 520, 1000, 110)
 class Coord:
     def __init__(self, x, y):
         self.x = x
-        self.y = y    
+        self.y = y
 
 class RegionData:
     def __init__(self):
         self.region_entities_grid = []
         self.region_entities = []
         self.region_beams = []
+        self.main_tower = None
+        self.light_on = False
 
 class DialogData:
     def __init__(self):
@@ -35,13 +37,16 @@ class Game:
         initial_level.load()
         self.current_level = initial_level
         self.region_data = RegionData()
-        self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
-        for i in range(0, self.current_level.height):
-            self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
+        # self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
+
+        # for i in range(0, self.current_level.height):
+        #     self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
+        
+        self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
 
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
-        self.UpdateTowerStates()
+        # self.UpdateTowerStates()
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
@@ -72,6 +77,7 @@ class Game:
                             continue
                         if properties['sprite_type'] == "main":
                             towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
+                            self.region_data.main_tower = towerEntity
                             self.all_sprites.add(towerEntity.sprite)
                             self.all_sprites.add(towerEntity.light_sprite)
                             continue
@@ -82,11 +88,14 @@ class Game:
         pass
 
     def RotateClickedSprites(self, clicked_sprites):
-        print("rotating clicked sprites", len(clicked_sprites))
+        # print("rotating clicked sprites", len(clicked_sprites))
         for sprite in clicked_sprites:
             # rotates the sprite, and also updates the tower type's to point in the right direction
-            sprite.rotate_frames(-45)
-            self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
+            if sprite.can_rotate:
+                print("a sprite will rotate at ", sprite.x, sprite.y)
+                sprite.rotate_frames(45)
+                # import pdb; pdb.set_trace()
+                self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
 
     def render_dialogue_box(self, surface):
         pygame.draw.rect(surface, (255,255,255), DIALOGUE_BOX_RECT)
@@ -118,7 +127,22 @@ class Game:
             text = text[i:]
         return text
 
+    def TurnOffLights(self):
+        # removing the beams and cleaning up the tower
+        self.region_data.region_beams = []
+        self.region_data.light_on = False
 
+
+    def ToggleLight(self):
+        print("space pressed")
+        if self.region_data.light_on:
+            # its on, turning it off
+            self.TurnOffLights()
+        else:
+            # its off, turning it on
+            # adding back the first emitter, and then updating tower states
+            self.UpdateTowerStates()
+            self.region_data.light_on = True
 
 
     # Returns false
@@ -130,14 +154,13 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                     return False
-                if event.key == pygame.K_w:
-                    print("w pressed")
-                if event.key == pygame.K_a:
-                    print("w pressed")
+                if event.key == pygame.K_q or event.key == pygame.K_SPACE:
+                    self.ToggleLight()
             if event.type == pygame.MOUSEBUTTONUP:
+                # when rotating, turn off lights
+                self.TurnOffLights()
                 pos = pygame.mouse.get_pos()
-                # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
-                clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
+                clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos) and s.can_rotate]
                 self.RotateClickedSprites(clicked_sprites)
         return True
 

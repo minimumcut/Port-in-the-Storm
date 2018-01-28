@@ -19,14 +19,13 @@ class LightEmitter:
          self.angle = angle
          self.out = out
 
-DEFAULT_LIGHT_RECIEVER_ANGLES = []
-DEFAULT_LIGHT_FORWARDER = [LightForwarder(1, 1.0), LightForwarder(2, 1.0), LightForwarder(3, 1.0),
-                           LightForwarder(4, 1.0), LightForwarder(5, 1.0), LightForwarder(6, 1.0),
-                           LightForwarder(7, 1.0), LightForwarder(8, 1.0)]
-DEFAULT_LIGHT_EMITTERS = [LightEmitter(0, 1.0)]
+# these are copied by reference, so we should probs not use them, or if we do, deep copy them
+# DEFAULT_LIGHT_RECIEVER_ANGLES = []
+# DEFAULT_LIGHT_FORWARDER = [LightForwarder(4, 1.0)]
+# DEFAULT_LIGHT_EMITTERS = [LightEmitter(4, 1.0)]
 
 def CreateDefaultEmitterTower(x, y, region_data):
-    towerType = TowerType(DEFAULT_LIGHT_EMITTERS, [], [], 0)
+    towerType = TowerType([LightEmitter(4, 1.0)], [], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated emitter at: " + str(x) + " " +  str(y))
@@ -34,7 +33,7 @@ def CreateDefaultEmitterTower(x, y, region_data):
     return towerEntity
 
 def CreateDefaultForwarderTower(x, y, region_data):
-    towerType = TowerType([], DEFAULT_LIGHT_FORWARDER, [], 0)
+    towerType = TowerType([], [LightForwarder(4, 1.0)], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
@@ -42,7 +41,7 @@ def CreateDefaultForwarderTower(x, y, region_data):
     return towerEntity
 
 def CreateDefaultRecieverTower(x, y, region_data):
-    towerType = TowerType([], [], DEFAULT_LIGHT_RECIEVER_ANGLES, 0)
+    towerType = TowerType([], [], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
@@ -60,10 +59,12 @@ class TowerType:
         #assuming that everytime this is called, it rotates by 45 degrees clockwise
         for rcv in self.light_recievers:
             rcv.angle = (rcv.angle + 1) % 8
-        for emmitter in self.light_emitters:
-            emmitter.angle = (emmitter.angle + 1) % 8
+        for emitter in self.light_emitters:
+            emitter.angle = (emitter.angle + 1) % 8
+            print("emitter angle: ", emitter.angle)
         for fwd in self.light_forwarders:
             fwd.angle = (fwd.angle + 1) % 8
+            print("fwd angle: ", fwd.angle)
 
 
 class TowerEntity:
