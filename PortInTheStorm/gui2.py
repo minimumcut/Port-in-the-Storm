@@ -7,9 +7,9 @@ print (os.getcwd())
 # Initialize the game engine
 pygame.init()
  
-
+BLACK = (255,255,255)
 # Set the height and width of the screen
-size = [960, 704]
+size = [1280, 704]
 screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  
