@@ -18,16 +18,16 @@ def GameEntry():
     clock = pygame.time.Clock()
 
     levelProps = LevelProperties("Test level", 1)
-    initialLevel = Level(levelProps, 15, 11, [], "levels/level1.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    initialLevel = Level(levelProps, 15, 11, [], "levels/level1.tmx", "dialog/01begin.txt", None) # hardcoding rip
 
     levelProps2 = LevelProperties("Test level", 1)
-    initialLevel2 = Level(levelProps2, 15, 11, [], "levels/level2.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    initialLevel2 = Level(levelProps2, 15, 11, [], "levels/level2.tmx", "dialog/02begin.txt", None) # hardcoding rip
 
     levelProps3 = LevelProperties("Test level", 1)
-    initialLevel3 = Level(levelProps3, 15, 11, [], "levels/level3.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    initialLevel3 = Level(levelProps3, 15, 11, [], "levels/level3.tmx", "dialog/03begin.txt", None) # hardcoding rip
 
     levelProps4 = LevelProperties("Test level", 1)
-    initialLevel4 = Level(levelProps4, 15, 11, [], "levels/001.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    initialLevel4 = Level(levelProps4, 15, 11, [], "levels/001.tmx", None, None) # hardcoding rip
 
     # levelProps5 = LevelProperties("Test level", 1)
     # initialLevel5 = Level(levelProps5, 15, 11, [], "levels/002.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
