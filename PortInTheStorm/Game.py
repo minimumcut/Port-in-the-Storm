@@ -75,7 +75,7 @@ class Game:
 
         self.current_level = next_level
         self.region_data = RegionData()
-        self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
+        self.region_data.region_entities_grid = [[None for x in range(self.current_level.height)] for y in range(self.current_level.width)]
         self.bg_sprites = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
@@ -95,8 +95,8 @@ class Game:
     def initialize_lighthouses(self):
         game_map = self.current_level.loaded_sprite_map
         for layer in game_map.visible_layers:
-            for x in range(0, 15):
-                for y in range(0, 15):
+            for x in range(0, 14):
+                for y in range(0, 10):
                     wf = [ \
                         pygame.image.load('sprites/water_tiles/water1.png'), \
                         pygame.image.load('sprites/water_tiles/water2.png'), \
@@ -273,8 +273,8 @@ class Game:
     def Render(self, screen):
         game_map = self.current_level.loaded_sprite_map
         for layer in game_map.visible_layers:
-                for x in range(0, 15):
-                    for y in range(0, 15):
+                for x in range(0, 14):
+                    for y in range(0, 10):
                         pygame_surface = game_map.get_tile_image(x, y, 0)
                         screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
 
