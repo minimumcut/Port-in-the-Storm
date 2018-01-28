@@ -107,11 +107,14 @@ class Game:
     def GameTick(self):
         pass
     
-    def OnIntersect(self, tower, origin, intersect_angle):
-        tower.isPowered = True
+    def OnIntersect(self, source_tower, destination, intersect_angle):
+        dest_tower = self.region_data.region_entities_grid[destination.x][destination.y]
+        if(dest_tower != None):
+            dest_tower.isPowered = True
+        
         # Create the beam
         beam_type = Beam.BeamType((255,255,255), 5, 5, 5) 
-        new_beam = Beam.Beam(origin.x, origin.y, tower.x, tower.y, beam_type)
+        new_beam = Beam.Beam(source_tower.x, source_tower.y, destination.x, destination.y, beam_type)
         self.region_data.region_beams.append(new_beam)
 
     def DetermineTowersBeamIntersect(self, towers):
@@ -123,13 +126,13 @@ class Game:
             for emitter in emitter_list:
                 
                 intersect = self.DetermineBeamIntersect(x, y, emitter.angle)
-                self.OnIntersect(tower, origin, emitter.angle)
+                self.OnIntersect(tower, intersect, emitter.angle)
                 
             if tower.is_powered:
                 fowarder_list = tower.tower_type.light_forwarders
                 for forwarder in forwarder_list:
                     intersect = self.DetermineBeamIntersect(x, y, forwarder.angle)
-                    OnIntersect(tower, origin, forwarder.angle)
+                    OnIntersect(tower, intersect, forwarder.angle)
             
 
 
@@ -164,7 +167,9 @@ class Game:
         #print(self.current_level.height)
         print(len(self.region_data.region_entities_grid))
 
-        while x > 0 and x < self.current_level.width and y > 0 and y < self.current_level.height:
+        x = x + dx
+        y = y + dy
+        while x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
             if self.region_data.region_entities_grid[x][y] != None:
                 return Coord(x,y)
         
