@@ -9,7 +9,7 @@ import TowerEntityRenderer
 from Constants import PIXEL_RESOLUTION
 from itertools import repeat
 from pytmx import load_pygame
-from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType
+from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType, SetUpShipSprite, SetUpCloudSprite
 
 
 pygame.font.init()
@@ -97,12 +97,17 @@ class Game:
                             self.all_sprites.add(towerEntity.sprite)
                             self.all_sprites.add(towerEntity.light_sprite)
                             continue
-    
                         if properties['sprite_type'] == "ship":
                             towerEntity = CreateDefaultRecieverTower(x, y, self.region_data)
+                            # set up ship sprites
+                            SetUpShipSprite(x,y,towerEntity)
                             self.all_sprites.add(towerEntity.sprite)
                             self.region_data.ships.append(towerEntity)
-                            # no light sprite
+                            continue
+                        if properties['sprite_type'] == "cloud":
+                            towerEntity = CreateDefaultRecieverTower(x, y, self.region_data)
+                            SetUpCloudSprite(x,y,towerEntity)
+                            self.all_sprites.add(towerEntity.sprite)
                             continue
 
     def advance_dialog(self):

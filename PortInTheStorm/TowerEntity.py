@@ -48,8 +48,6 @@ def CreateDefaultRecieverTower(x, y, region_data):
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
-    # set up ship sprites
-    SetUpShipSprite(x,y,towerEntity)
     return towerEntity
 
 def SetUpShipSprite(x,y, towerEntity):
@@ -58,6 +56,14 @@ def SetUpShipSprite(x,y, towerEntity):
     smaller_img = pygame.transform.scale(img, (PIXEL_RESOLUTION, PIXEL_RESOLUTION))
 
     towerEntity.sprite = Sprite(x=x, y=y, frames=[[smaller_img]])
+    towerEntity.sprite.rect.x = x*PIXEL_RESOLUTION;
+    towerEntity.sprite.rect.y = y*PIXEL_RESOLUTION;
+    towerEntity.light_sprite = None;
+
+def SetUpCloudSprite(x,y, towerEntity):
+    towerEntity.tower_type.is_passable = False;
+    img = pygame.image.load('sprites/fake_cloud.png')
+    towerEntity.sprite = Sprite(x=x, y=y, frames=[[img]])
     towerEntity.sprite.rect.x = x*PIXEL_RESOLUTION;
     towerEntity.sprite.rect.y = y*PIXEL_RESOLUTION;
     towerEntity.light_sprite = None;
