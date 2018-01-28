@@ -1,4 +1,4 @@
-; char_goose_neutral.png char_goose_neutral.png
+; l.png r.png
 [Grandfather]: *cough* Granddaughter, I need your help. The other tower lights are down and I can just see.
 [Granddaughter]: Right away!
 [Grandfather]: Wait, *cough* take me with you, you have never done this in a storm before!

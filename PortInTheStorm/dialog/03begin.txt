@@ -1,4 +1,4 @@
-; char_goose_neutral.png char_goose_neutral.png
+; l.png r.png
 [Grandfather] Few lighthouses have their own light source out here. It was easier to redirect a beam than create a new one.
 [Granddaughter] According to this log file there should be a passenger ship on the other side of that fog bank.
 [Grandfather] And now we must trust our fellows to guide that ship home.
