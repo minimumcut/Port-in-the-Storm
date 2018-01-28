@@ -35,7 +35,8 @@ class RegionData:
         self.ships = []
         self.victory = False
         self.transitioning = False
-        self.transition_countdown = 60
+        self.transition_countdown = 30
+        self.beam_countdown = 10
         self.water_frames = [ \
             pygame.image.load('sprites/water_tiles/water1.png'), \
             pygame.image.load('sprites/water_tiles/water2.png'), \
@@ -302,13 +303,17 @@ class Game:
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:
             if not ship.is_powered:
+                self.region_data.beam_countdown = 15
                 #import pdb; pdb.set_trace()
                 print("ships arent fully powered yet")
                 return False
-        print("ships are powered!!! Done level")
-        #import pdb; pdb.set_trace()
-        self.WinLevel()
-        return True
+        if self.region_data.beam_countdown == 0:
+            print("ships are powered!!! Done level")
+            #import pdb; pdb.set_trace()
+            self.WinLevel()
+            return True
+        else:
+            self.region_data.beam_countdown = self.region_data.beam_countdown - 1
 
     def UpdateTowerStates(self):
         # fuck it O(N^3) baby
@@ -318,15 +323,15 @@ class Game:
         self.region_data.region_beams = [] 
 
         for fuck_you in self.region_data.region_entities:
-            self.DetermineTowersBeamIntersect(self.region_data.region_entities)
-        self.CheckIfAllShipsPowered()
-        
+            self.DetermineTowersBeamIntersect(self.region_data.region_entities)        
 
     def GameTick(self):
         if self.region_data.transitioning:
             self.region_data.transition_countdown = self.region_data.transition_countdown - 1
             if(self.region_data.transition_countdown <= 0):
                 self.TransitionLevel() 
+        if not self.region_data.victory:
+            self.CheckIfAllShipsPowered()
 
     def GetTowerFromRegionGrid(self, x, y):
         if x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
