@@ -5,7 +5,6 @@
  <tileset firstgid="3" source="../tileset/LHMain.tsx"/>
  <tileset firstgid="12" source="../tileset/LH1.tsx"/>
  <tileset firstgid="13" source="../tileset/fog1.tsx"/>
- <tileset firstgid="14" source="../tileset/grass-tile-2-small.tsx"/>
  <layer name="Tile Layer 1" width="20" height="11">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
