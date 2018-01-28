@@ -29,13 +29,13 @@ def GameEntry():
     levelProps4 = LevelProperties("Test level", 1)
     initialLevel4 = Level(levelProps4, 15, 11, [], "levels/001.tmx", None, None) # hardcoding rip
 
-    # levelProps5 = LevelProperties("Test level", 1)
-    # initialLevel5 = Level(levelProps5, 15, 11, [], "levels/002.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
+    levelProps5 = LevelProperties("Test level", 1)
+    initialLevel5 = Level(levelProps5, 15, 11, [], "levels/level_a1.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
 
     # levelProps6 = LevelProperties("Test level", 1)
     # initialLevel6 = Level(levelProps6, 15, 11, [], "levels/003.tmx", "dialog/dialog_test.txt", "dialog/dialog_test_end.txt") # hardcoding rip
 
-    game = Game([initialLevel, initialLevel2, initialLevel3, initialLevel4])
+    game = Game([initialLevel, initialLevel2, initialLevel3, initialLevel4, initialLevel5])
 
     # --- Main event loop
     while True:
