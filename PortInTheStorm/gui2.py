@@ -6,8 +6,8 @@ print (os.getcwd())
 
 # Initialize the game engine
 pygame.init()
- 
-BLACK = (255,255,255)
+GREEN = (0,255,0)
+BLACK = (0,0,0)
 # Set the height and width of the screen
 size = [1280, 704]
 screen = pygame.display.set_mode(size) 
