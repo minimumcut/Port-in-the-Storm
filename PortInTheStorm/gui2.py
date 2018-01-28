@@ -15,7 +15,7 @@ GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
 
 # Set the height and width of the screen
-size = [1280, 704]
+size = [960, 704]
 screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  
