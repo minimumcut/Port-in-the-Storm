@@ -13,13 +13,10 @@ WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 250)
 GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
- 
+
 # Set the height and width of the screen
 size = [1280, 704]
-screen = pygame.display.set_mode(size)
-# Set the position and the size for the button
-position1 = [640, 300, 100, 50]
- 
+screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  
 #Loop until the user clicks the close button.
@@ -31,7 +28,7 @@ while not done:
  
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
-    clock.tick(10)
+    clock.tick(60)
      
     for event in pygame.event.get(): # User did something
         
@@ -47,19 +44,31 @@ while not done:
 
 
 
-
-
-
+    def start():
+        pygame.draw.rect(screen,GREEN,[100,100,100,100])
+        if True:
+            print("0")
+        #this is a example for main game loop
+        
+    def levelSelect():
+        None
 
 
 
     #all about button
-    def button(msg,x,y,w,h,ic,ac):
+
+
+    
+    def button(msg,x,y,w,h,ic,ac,action):
         mouse = pygame.mouse.get_pos()
-        print(mouse)
-        lis = [x,y,w,h]
+        click = pygame.mouse.get_pressed()
+        #print(click)
+        #print(mouse)
         if x+w > mouse[0] > x and y+h > mouse[1]:
             pygame.draw.rect(screen, ac,(x,y,w,h))
+            if click[0] == 1:
+                print(msg,x,y,w,h)
+                action()
         else:
             pygame.draw.rect(screen, ic,(x,y,w,h))
 
@@ -78,12 +87,18 @@ while not done:
         else:
             return False
 
+    #def flash(obj):
+        
+
     def highlighter(colorTup):
         light_list = [x+25 for x in list(colorTup)]
         vaild_list = [max(min(x, 255), 0) for x in light_list]       
         return tuple(vaild_list)
     
-    button("go!",640, 300, 100, 50, BLUE,highlighter(BLUE))       
+    button("START",640, 300, 100, 50, BLUE,highlighter(BLUE),start)
+    button("QUIT",240, 300, 100, 50, RED,highlighter(BLUE),quit)
+    button("LEVEL",400, 300,100,50, RED,highlighter(BLUE),levelSelect)
+    
 
 
 
