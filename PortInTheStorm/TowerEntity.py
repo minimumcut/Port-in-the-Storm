@@ -41,19 +41,31 @@ def CreateDefaultForwarderTower(x, y, region_data):
     return towerEntity
 
 def CreateDefaultRecieverTower(x, y, region_data):
-    towerType = TowerType([], [], [], 0)
+    towerType = TowerType([], [], [], 0, True)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
+    # set up ship sprites
+    SetUpShipSprite(x,y,towerEntity)
     return towerEntity
 
+def SetUpShipSprite(x,y, towerEntity):
+    img = pygame.image.load('sprites/ship1.png')
+    smaller_img = pygame.transform.scale(img, (32, 32))
+
+    towerEntity.sprite = Sprite(x=x, y=y, frames=[[smaller_img]])
+    towerEntity.sprite.rect.x = x*32;
+    towerEntity.sprite.rect.y = y*32;
+    towerEntity.light_sprite = None;
+
 class TowerType:
-    def __init__(self, light_emitters, light_forwarders, light_recievers, initial_rotation):
+    def __init__(self, light_emitters, light_forwarders, light_recievers, initial_rotation, is_passable=False):
         self.light_recievers = light_recievers
         self.light_emitters = light_emitters
         self.light_forwarders = light_forwarders
         self.initial_rotation = initial_rotation
+        self.is_passable = is_passable
     def rotate_light(self):
         print("rotating light")
         #assuming that everytime this is called, it rotates by 45 degrees clockwise

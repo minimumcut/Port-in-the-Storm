@@ -32,6 +32,7 @@ class RegionData:
         self.region_beams = []
         self.main_tower = None
         self.light_on = False
+        self.ships = []
 
 class DialogData:
     def __init__(self):
@@ -92,6 +93,12 @@ class Game:
                             self.all_sprites.add(towerEntity.sprite)
                             self.all_sprites.add(towerEntity.light_sprite)
                             continue
+                        if properties['sprite_type'] == "ship":
+                            towerEntity = CreateDefaultRecieverTower(x, y, self.region_data)
+                            self.all_sprites.add(towerEntity.sprite)
+                            self.region_data.ships.append(towerEntity)
+                            # no light sprite
+                            continue
     def set_dialogue():
         pass
 
@@ -150,6 +157,7 @@ class Game:
             # adding back the first emitter, and then updating tower states
             self.UpdateTowerStates()
             self.region_data.light_on = True
+            self.CheckIfAllShipsPowered()
 
 
     def render_character_sprite(self, surface):
@@ -202,7 +210,16 @@ class Game:
 
         pygame.display.flip()
 
-    
+
+    def CheckIfAllShipsPowered(self):
+        for ship in self.region_data.ships:
+            if not ship.is_powered:
+                print("ships arent fully powered yet")
+                return False
+        print("ships are powered!!! Done level")
+        # TODO: do this when done TransitionToLevel()
+        return True
+
     def UpdateTowerStates(self):
         # fuck it O(N^3) baby
         for tower in self.region_data.region_entities:
@@ -284,8 +301,11 @@ class Game:
         
         while x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
             if self.region_data.region_entities_grid[x][y] != None:
-                print("Encountered collision at: " + str(x) + " " + str(y))
-                return Coord(x,y)
+                if self.region_data.region_entities_grid[x][y].tower_type.is_passable:
+                    self.region_data.region_entities_grid[x][y].is_powered = True
+                else:
+                    print("Encountered collision at: " + str(x) + " " + str(y))
+                    return Coord(x,y)
         
             x = x + dx
             y = y + dy

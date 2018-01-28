@@ -11,4 +11,9 @@
    <property name="sprite_type" value="main"/>
   </properties>
  </tile>
+ <tile id="36">
+  <properties>
+   <property name="sprite_type" value="ship"/>
+  </properties>
+ </tile>
 </tileset>
