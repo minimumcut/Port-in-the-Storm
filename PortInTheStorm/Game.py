@@ -113,7 +113,8 @@ class Game:
     
     def dialog_finshed(self):
         self.hide_dialogue_box()
-        pass
+        if self.region_data.victory:
+            self.TransitionLevel()
     
     def advance_dialog(self):
         if(len(self.dialog_data.dialog_cmd_list) == 0):
@@ -262,6 +263,11 @@ class Game:
 
         pygame.display.flip()
 
+    def WinLevel():
+        self.region_data.victory = True
+        self.dialog_data.dialog_cmd_list = self.current_level.loaded_post_level_dialog
+        if self.dialog_data.dialog_cmd_list != None:
+            self.advance_dialog() 
 
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:
@@ -269,8 +275,7 @@ class Game:
                 print("ships arent fully powered yet")
                 return False
         print("ships are powered!!! Done level")
-        import pdb; pdb.set_trace()
-        self.TransitionLevel()
+        self.WinLevel()
         return True
 
     def UpdateTowerStates(self):
