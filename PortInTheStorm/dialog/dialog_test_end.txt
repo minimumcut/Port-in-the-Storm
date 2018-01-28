@@ -1,4 +1,4 @@
-; char_goose_neutral.png char_goose_neutral.png
+; l.png r.png
 You have conquered
 the port and now
 you are the storm
