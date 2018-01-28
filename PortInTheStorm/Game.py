@@ -50,47 +50,36 @@ class DialogData:
         self.current_dialogue = "HA"
 
 class Game:
-    def __init__(self, initial_level):
-        print("Loading level " + initial_level.level_properties.level_name)
-        initial_level.load()
-        self.current_level = initial_level
-        self.region_data = RegionData()
-        # self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
-
-        # for i in range(0, self.current_level.height):
-        #     self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
-        
-        self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
-
-        self.bg_sprites = pygame.sprite.Group()
-        self.all_sprites = pygame.sprite.Group()
-
-        self.initialize_lighthouses()
-        # self.UpdateTowerStates()
-        self.dialog_data = DialogData()
-        self.dialog_data.dialog_cmd_list = self.current_level.loaded_pre_level_dialog
-        if self.dialog_data.dialog_cmd_list != None:
-            self.advance_dialog() 
+    def __init__(self, level_list):
+        self.level_list = level_list
+        self.TransitionLevel()
         self.InitMusic()
 
 
     def InitMusic(self):
         playlist = list()
         playlist.append ("music/debussy.mp3")
-        
+
         # play some avante garde music FOREVER (the ride never ends)
         # pygame.mixer.music.load(playlist.pop())  
         # pygame.mixer.music.set_endevent(pygame.USEREVENT)  
         # pygame.mixer.music.play(-1)
 
-    def TransitionToLevel(next_level):
-        print("Loading level " + next_level.level_properties.level_name)
+    def TransitionLevel(self):
+        next_level = self.level_list[0]
+        self.level_list = self.level_list[1:]
+        next_level.load()
+
         self.current_level = next_level
         self.region_data = RegionData()
+        self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
+        self.bg_sprites = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
-        self.UpdateTowerStates()
         self.dialog_data = DialogData()
+        self.dialog_data.dialog_cmd_list = self.current_level.loaded_pre_level_dialog
+        if self.dialog_data.dialog_cmd_list != None:
+            self.advance_dialog() 
 
     # This method iterates over the game map only once to create sprites based on the property 'sprite_type'
     # sprite_types can be:
@@ -149,7 +138,8 @@ class Game:
 
     def dialog_finshed(self):
         self.hide_dialogue_box()
-        pass
+        if self.region_data.victory:
+            self.TransitionLevel()
     
     def advance_dialog(self):
         if(len(self.dialog_data.dialog_cmd_list) == 0):
@@ -237,8 +227,6 @@ class Game:
             # adding back the first emitter, and then updating tower states
             self.UpdateTowerStates()
             self.region_data.light_on = True
-            self.CheckIfAllShipsPowered()
-
 
     def render_character_sprite(self, surface):
         if self.dialog_data.show_dialogue_box:
@@ -266,7 +254,7 @@ class Game:
                     self.advance_dialog()
                 else:
                     # when rotating, turn off lights
-                    self.TurnOffLights()
+                    #self.TurnOffLights()
                     pos = pygame.mouse.get_pos()
                     clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos) and s.can_rotate]
                     # event.button == 1 left click
@@ -275,6 +263,7 @@ class Game:
                         # event.button == 3 right click
                     elif event.button == 3:
                         self.RotateClickedSprites(clicked_sprites, False)
+                    self.UpdateTowerStates()
         return True
 
     def Render(self, screen):
@@ -298,14 +287,21 @@ class Game:
 
         pygame.display.flip()
 
+    def WinLevel(self):
+        self.region_data.victory = True
+        self.dialog_data.dialog_cmd_list = self.current_level.loaded_post_level_dialog
+        if self.dialog_data.dialog_cmd_list != None:
+            self.advance_dialog() 
 
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:
             if not ship.is_powered:
+                #import pdb; pdb.set_trace()
                 print("ships arent fully powered yet")
                 return False
         print("ships are powered!!! Done level")
-        # TODO: do this when done TransitionToLevel()
+        #import pdb; pdb.set_trace()
+        self.WinLevel()
         return True
 
     def UpdateTowerStates(self):
@@ -317,6 +313,8 @@ class Game:
 
         for fuck_you in self.region_data.region_entities:
             self.DetermineTowersBeamIntersect(self.region_data.region_entities)
+        self.CheckIfAllShipsPowered()
+        
 
     def GameTick(self):
         pass
