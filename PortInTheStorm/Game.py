@@ -1,14 +1,16 @@
-# Import the pygame library and initialise the game engine
+import BeamRenderer
+import Beam
+import DialogParser
 import pygame
 import pytmx
 import RenderPostFX
-import BeamRenderer
-import Beam
 import TowerEntityRenderer
-import DialogParser
+
+from Constants import PIXEL_RESOLUTION
+from itertools import repeat
 from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType
-from itertools import repeat
+
 
 
 pygame.font.init()
@@ -197,7 +199,7 @@ class Game:
                 for x in range(0, 20):
                     for y in range(0, 20):
                         pygame_surface = game_map.get_tile_image(x, y, 0)
-                        screen.blit(pygame_surface, (32*x, 32*y))
+                        screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
 
 
         TowerEntityRenderer.RenderTowers(screen, self.region_data.region_entities)

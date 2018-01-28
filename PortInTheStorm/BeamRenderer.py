@@ -1,14 +1,17 @@
 import pygame
 import Beam
+from Constants import PIXEL_RESOLUTION, RESOLUTION_X, RESOLUTION_Y
 
 def RenderBeams(screen, beams):
 
-    beam_framebuffer = pygame.surface.Surface((1280, 704), pygame.SRCALPHA, 32)
+    beam_framebuffer = pygame.surface.Surface((RESOLUTION_X, RESOLUTION_Y), pygame.SRCALPHA, PIXEL_RESOLUTION)
     beam_framebuffer = beam_framebuffer.convert_alpha()
-        
+    half_pix_res = PIXEL_RESOLUTION/2
+
     for beam in beams:
-        beam_origin =  (16 + 32 * beam.x_origin, 16 + 32 * beam.y_origin)
-        beam_dest =  (16 + 32 * beam.x_dest, 16 + 32 * beam.y_dest)
+
+        beam_origin =  (half_pix_res + PIXEL_RESOLUTION * beam.x_origin, half_pix_res + PIXEL_RESOLUTION * beam.y_origin)
+        beam_dest =  (half_pix_res + PIXEL_RESOLUTION * beam.x_dest, half_pix_res + PIXEL_RESOLUTION * beam.y_dest)
         pygame.draw.line(beam_framebuffer, beam.beamType.color, beam_origin, beam_dest, beam.beamType.width)
 
     screen.blit(beam_framebuffer, (0, 0))

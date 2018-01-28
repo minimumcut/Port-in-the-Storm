@@ -1,5 +1,5 @@
-
 import sys, pygame, os, time, random
+from Constants import RESOLUTION_X, RESOLUTION_Y
 from math import pi
 
 print (os.getcwd())
@@ -15,7 +15,7 @@ GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
 
 # Set the height and width of the screen
-size = [1280, 704]
+size = [RESOLUTION_X, RESOLUTION_Y]
 screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  

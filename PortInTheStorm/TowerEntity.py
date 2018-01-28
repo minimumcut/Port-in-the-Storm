@@ -1,6 +1,8 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
+
+from Constants import PIXEL_RESOLUTION
 from pytmx import load_pygame
 from Sprite import Sprite
 
@@ -52,11 +54,12 @@ def CreateDefaultRecieverTower(x, y, region_data):
 
 def SetUpShipSprite(x,y, towerEntity):
     img = pygame.image.load('sprites/ship1.png')
-    smaller_img = pygame.transform.scale(img, (32, 32))
+    # @TODO anthonyluu: remove this after we switch to 64x64
+    smaller_img = pygame.transform.scale(img, (PIXEL_RESOLUTION, PIXEL_RESOLUTION))
 
     towerEntity.sprite = Sprite(x=x, y=y, frames=[[smaller_img]])
-    towerEntity.sprite.rect.x = x*32;
-    towerEntity.sprite.rect.y = y*32;
+    towerEntity.sprite.rect.x = x*PIXEL_RESOLUTION;
+    towerEntity.sprite.rect.y = y*PIXEL_RESOLUTION;
     towerEntity.light_sprite = None;
 
 class TowerType:
@@ -89,8 +92,8 @@ class TowerEntity:
         self.tower_type = tower_type
         # pos is placeholder
         self.sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/tower.png')]])
-        self.sprite.rect.x = x*32
-        self.sprite.rect.y = y*32
+        self.sprite.rect.x = x*PIXEL_RESOLUTION
+        self.sprite.rect.y = y*PIXEL_RESOLUTION
         self.light_sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/light.png')]], can_rotate=True)
-        self.light_sprite.rect.x = x*32
-        self.light_sprite.rect.y = y*32
+        self.light_sprite.rect.x = x*PIXEL_RESOLUTION
+        self.light_sprite.rect.y = y*PIXEL_RESOLUTION

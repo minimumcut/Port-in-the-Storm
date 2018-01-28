@@ -1,15 +1,17 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
-from pytmx import load_pygame
+
+from Constants import RESOLUTION_X, RESOLUTION_Y
 from Game import Game
 from Level import Level
 from Level import LevelProperties
+from pytmx import load_pygame
 
 def main():
     pygame.init()
 
-    size = (1280, 704)
+    size = (RESOLUTION_X, RESOLUTION_Y)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Port in a Storm")
 

@@ -1,7 +1,8 @@
-# Import the pygame library and initialise the game engine
+import DialogParser
 import pygame
 import pytmx
-import DialogParser
+
+from Constants import PIXEL_RESOLUTION
 from pytmx import load_pygame
 
 class LevelProperties:
@@ -26,7 +27,7 @@ class Level:
             for x in range(0, width):
                 for y in range(0, height):
                     pygame_surface = loaded_sprite_map.get_tile_image(x, y, 0)
-                    screen.blit(pygame_surface, (32*x, 32*y))
+                    screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
                     
     def load(self):
         self.loaded_sprite_map = load_pygame(self.sprite_map)
