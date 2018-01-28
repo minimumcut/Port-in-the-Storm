@@ -10,7 +10,6 @@ from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
 from itertools import repeat
 
-
 pygame.font.init()
 
 goose = pygame.image.load("sprites/char_goose_neutral.png")
@@ -33,6 +32,7 @@ class RegionData:
 
 class DialogData:
     def __init__(self):
+        self.dialog_cmd_list = None
         self.current_left_sprite = None
         self.current_right_sprite = None
         self.show_dialogue_box = False
@@ -52,6 +52,8 @@ class Game:
         self.initialize_lighthouses()
         self.UpdateTowerStates()
         self.dialog_data = DialogData()
+        self.dialog_data.dialog_cmd_list = level.post_level_dialog
+        
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
@@ -86,11 +88,22 @@ class Game:
                             self.all_sprites.add(towerEntity.sprite)
                             self.all_sprites.add(towerEntity.light_sprite)
                             continue
-    def set_dialogue():
+    
+    def advance_dialog(self):
         pass
 
+    def set_character(self, left_character, right_character):
+        self.dialog_data.current_left_sprite = left_character
+        self.dialog_data.current_right_sprite = right_character
+
+    def set_dialogue(self, text):
+        self.dialog_data.show_dialogue_box = True
+        self.dialog_data.current_dialogue = text
+
     def hide_dialogue_box():
-        pass
+        self.dialog_data.show_dialogue_box = False
+        self.dialog_data.current_left_sprite = None
+        self.dialog_data.current_right_sprite = None
 
     def RotateClickedSprites(self, clicked_sprites):
         print("rotating clicked sprites", len(clicked_sprites))
@@ -131,7 +144,7 @@ class Game:
            surface.blit(goose, LEFT_CHARACTER_SPRITE_POS)
         
         if self.dialog_data.current_right_sprite != None:
-           surface.blit(goose, Right_CHARACTER_SPRITE_POS)
+           surface.blit(goose, RIGHT_CHARACTER_SPRITE_POS)
        
         
     # Returns false
@@ -148,10 +161,13 @@ class Game:
                 if event.key == pygame.K_a:
                     print("w pressed")
             if event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
-                clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
-                self.RotateClickedSprites(clicked_sprites)
+                if self.dialog_data.show_dialogue_box:
+                    self.advance_dialog()
+                else:
+                    pos = pygame.mouse.get_pos()
+                    # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
+                    clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
+                    self.RotateClickedSprites(clicked_sprites)
         return True
 
     def Render(self, screen):
@@ -167,9 +183,9 @@ class Game:
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
         RenderPostFX.RenderVignette(screen)
-        
+
+        self.render_character_sprite(screen)        
         self.render_dialogue_box(screen)
-        self.render_character_sprite(screen)
 
         pygame.display.flip()
 
