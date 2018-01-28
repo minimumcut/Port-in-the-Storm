@@ -55,6 +55,16 @@ class TowerType:
         self.light_emitters = light_emitters
         self.light_forwarders = light_forwarders
         self.initial_rotation = initial_rotation
+    def rotate_light(self):
+        print("rotating light")
+        #assuming that everytime this is called, it rotates by 45 degrees clockwise
+        for rcv in self.light_recievers:
+            rcv.angle = (rcv.angle + 1) % 8
+        for emmitter in self.light_emitters:
+            emmitter.angle = (emmitter.angle + 1) % 8
+        for fwd in self.light_forwarders:
+            fwd.angle = (fwd.angle + 1) % 8
+
 
 class TowerEntity:
     def __init__(self, x, y, state, tower_type):
@@ -65,6 +75,9 @@ class TowerEntity:
         self.y = y
         self.tower_type = tower_type
         # pos is placeholder
-        self.sprite = Sprite(pos=0, frames=[[pygame.image.load('sprites/whitesprite.png')]])
+        self.sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/tower.png')]])
         self.sprite.rect.x = x*32
         self.sprite.rect.y = y*32
+        self.light_sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/light.png')]], can_rotate=True)
+        self.light_sprite.rect.x = x*32
+        self.light_sprite.rect.y = y*32
