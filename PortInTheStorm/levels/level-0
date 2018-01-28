@@ -1,0 +1,44 @@
+A series of quick levels to introduce mechanics (no hard tutorials).
+
+o : Boat
+# : Starting Lighthouse
++ : Many>One Lighthouse
+~ : Cloud
+
+
+Level 1: Rotation:
+==========
+
+ #  o o  +
+
+
+      o
+
+==========
+
+Level 2: Chaining:
+=================
+         ~~~~~~~~
+ # o +      ~~~~~
+             ~~~~
+               ~~
+
+     +   o  +
+
+   o     +
+=================
+
+Level 3: Introduce Clouds:
+===============
+~~~~~~~~~~~~~~~
+~ o ~  ~~~~~~~~
+~   ~  ~~~~~~~~
+~~~~    ~~~~~~~
+~    +     + ~~
+~~~~~~~~~~~ ~~~
+~~~~    ~~~   ~
+~~   +  ~~   ~~
+~ 
+~ #  ~  +  +  ~
+~   ~~~~~~~~~~~
+===============
