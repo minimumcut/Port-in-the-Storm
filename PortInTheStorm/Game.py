@@ -135,6 +135,7 @@ class Game:
                 fowarder_list = tower.tower_type.light_forwarders
                 for forwarder in forwarder_list:
                     intersect = self.DetermineBeamIntersect(x, y, forwarder.angle)
+                    import pdb; pdb.set_trace()
                     OnIntersect(tower, intersect, forwarder.angle)
             
 
