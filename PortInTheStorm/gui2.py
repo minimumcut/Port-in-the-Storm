@@ -4,6 +4,15 @@ from math import pi
 
 #print (os.getcwd())
 
+def InitMusic():
+    playlist = list()
+    playlist.append ("music/PortInTheStormTheme(Moody).wav")
+
+    # play some avante garde music FOREVER (the ride never ends)
+    pygame.mixer.music.load(playlist.pop())  
+    pygame.mixer.music.set_endevent(pygame.USEREVENT)  
+    pygame.mixer.music.play(-1)
+
 # Initialize the game engine
 pygame.init()
 GREEN = (0,255,0)
@@ -16,6 +25,8 @@ pygame.display.set_caption("Example code for the draw module")
 #Loop until the user clicks the close button.
 done = False
 clock = pygame.time.Clock()
+
+InitMusic()
 
 #Main loop
 while not done:
