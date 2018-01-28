@@ -1,14 +1,16 @@
-# Import the pygame library and initialise the game engine
+import BeamRenderer
+import Beam
+import DialogParser
 import pygame
 import pytmx
 import RenderPostFX
-import BeamRenderer
-import Beam
 import TowerEntityRenderer
-import DialogParser
-from pytmx import load_pygame
-from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
+
+from Constants import PIXEL_RESOLUTION
 from itertools import repeat
+from pytmx import load_pygame
+from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType
+
 
 pygame.font.init()
 
@@ -22,13 +24,16 @@ RIGHT_CHARACTER_SPRITE_POS = (800, 300)
 class Coord:
     def __init__(self, x, y):
         self.x = x
-        self.y = y    
+        self.y = y
 
 class RegionData:
     def __init__(self):
         self.region_entities_grid = []
         self.region_entities = []
         self.region_beams = []
+        self.main_tower = None
+        self.light_on = False
+        self.ships = []
 
 class DialogData:
     def __init__(self):
@@ -44,15 +49,18 @@ class Game:
         initial_level.load()
         self.current_level = initial_level
         self.region_data = RegionData()
-        self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
-        for i in range(0, self.current_level.height):
-            self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
+        # self.region_data.region_entities_grid = list(repeat(None, self.current_level.height))
+
+        # for i in range(0, self.current_level.height):
+        #     self.region_data.region_entities_grid[i] = list(repeat(None, self.current_level.width))
+        
+        self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
 
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
-        self.UpdateTowerStates()
+        # self.UpdateTowerStates()
         self.dialog_data = DialogData()
-        self.dialog_data.dialog_cmd_list = level.post_level_dialog
+        self.dialog_data.dialog_cmd_list = self.current_level.post_level_dialog
         
 
     def TransitionToLevel(next_level):
@@ -85,10 +93,18 @@ class Game:
                             continue
                         if properties['sprite_type'] == "main":
                             towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
+                            self.region_data.main_tower = towerEntity
                             self.all_sprites.add(towerEntity.sprite)
                             self.all_sprites.add(towerEntity.light_sprite)
                             continue
     
+                        if properties['sprite_type'] == "ship":
+                            towerEntity = CreateDefaultRecieverTower(x, y, self.region_data)
+                            self.all_sprites.add(towerEntity.sprite)
+                            self.region_data.ships.append(towerEntity)
+                            # no light sprite
+                            continue
+
     def advance_dialog(self):
         pass
 
@@ -106,11 +122,14 @@ class Game:
         self.dialog_data.current_right_sprite = None
 
     def RotateClickedSprites(self, clicked_sprites):
-        print("rotating clicked sprites", len(clicked_sprites))
+        # print("rotating clicked sprites", len(clicked_sprites))
         for sprite in clicked_sprites:
             # rotates the sprite, and also updates the tower type's to point in the right direction
-            sprite.rotate_frames(-45)
-            self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
+            if sprite.can_rotate:
+                print("a sprite will rotate at ", sprite.x, sprite.y)
+                sprite.rotate_frames(45)
+                # import pdb; pdb.set_trace()
+                self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
 
     def render_dialogue_box(self, surface):
         if not self.dialog_data.show_dialogue_box:
@@ -139,14 +158,31 @@ class Game:
             text = text[i:]
         return text
 
+    def TurnOffLights(self):
+        # removing the beams and cleaning up the tower
+        self.region_data.region_beams = []
+        self.region_data.light_on = False
+
+    def ToggleLight(self):
+        print("space pressed")
+        if self.region_data.light_on:
+            # its on, turning it off
+            self.TurnOffLights()
+        else:
+            # its off, turning it on
+            # adding back the first emitter, and then updating tower states
+            self.UpdateTowerStates()
+            self.region_data.light_on = True
+            self.CheckIfAllShipsPowered()
+
+
     def render_character_sprite(self, surface):
         if self.dialog_data.current_left_sprite != None:
            surface.blit(goose, LEFT_CHARACTER_SPRITE_POS)
-        
+
         if self.dialog_data.current_right_sprite != None:
            surface.blit(goose, RIGHT_CHARACTER_SPRITE_POS)
-       
-        
+
     # Returns false
     def HandleInputEvents(self):
         for event in pygame.event.get():
@@ -156,6 +192,8 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                     return False
+                if event.key == pygame.K_q or event.key == pygame.K_SPACE:
+                    self.ToggleLight()
                 if event.key == pygame.K_w:
                     self.dialog_data.show_dialogue_box = not self.dialog_data.show_dialogue_box
                 if event.key == pygame.K_a:
@@ -164,10 +202,12 @@ class Game:
                 if self.dialog_data.show_dialogue_box:
                     self.advance_dialog()
                 else:
+                    # when rotating, turn off lights
+                    self.TurnOffLights()
                     pos = pygame.mouse.get_pos()
-                    # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
-                    clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
+                    clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos) and s.can_rotate]
                     self.RotateClickedSprites(clicked_sprites)
+                    
         return True
 
     def Render(self, screen):
@@ -176,20 +216,30 @@ class Game:
                 for x in range(0, 20):
                     for y in range(0, 20):
                         pygame_surface = game_map.get_tile_image(x, y, 0)
-                        screen.blit(pygame_surface, (32*x, 32*y))
+                        screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
 
 
         TowerEntityRenderer.RenderTowers(screen, self.region_data.region_entities)
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
         RenderPostFX.RenderVignette(screen)
+        RenderPostFX.RenderRain(screen)
 
         self.render_character_sprite(screen)        
         self.render_dialogue_box(screen)
 
         pygame.display.flip()
 
-    
+
+    def CheckIfAllShipsPowered(self):
+        for ship in self.region_data.ships:
+            if not ship.is_powered:
+                print("ships arent fully powered yet")
+                return False
+        print("ships are powered!!! Done level")
+        # TODO: do this when done TransitionToLevel()
+        return True
+
     def UpdateTowerStates(self):
         # fuck it O(N^3) baby
         for tower in self.region_data.region_entities:
@@ -271,8 +321,11 @@ class Game:
         
         while x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
             if self.region_data.region_entities_grid[x][y] != None:
-                print("Encountered collision at: " + str(x) + " " + str(y))
-                return Coord(x,y)
+                if self.region_data.region_entities_grid[x][y].tower_type.is_passable:
+                    self.region_data.region_entities_grid[x][y].is_powered = True
+                else:
+                    print("Encountered collision at: " + str(x) + " " + str(y))
+                    return Coord(x,y)
         
             x = x + dx
             y = y + dy

@@ -1,5 +1,5 @@
-
 import sys, pygame, os, time, random
+from Constants import RESOLUTION_X, RESOLUTION_Y
 from math import pi
 
 print (os.getcwd())
@@ -15,7 +15,7 @@ GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
 
 # Set the height and width of the screen
-size = [1280, 704]
+size = [RESOLUTION_X, RESOLUTION_Y]
 screen = pygame.display.set_mode(size) 
 pygame.display.set_caption("Example code for the draw module")
  
@@ -38,9 +38,16 @@ while not done:
     # All drawing code happens after the for loop and but
     # inside the main while done==False loop.
      
-    # Clear the screen and set the screen background
-    background = pygame.image.load('example.jpg').convert()
+    # Clear the screen and set the screen background and import images
+    #background must draw at first
+    background = pygame.image.load('background.png').convert()
+    buttonStart = pygame.image.load('example.jpg').convert()
+    #buttonQuit = pygame.image.load(
+
+
     screen.blit(background, [0,0])
+##    screen.blit(buttonStart,[200,200,1000,1000])
+##    pygame.display.flip()
 
 
 
@@ -59,18 +66,22 @@ while not done:
 
 
     
-    def button(msg,x,y,w,h,ic,ac,action):
+    def button(msg,x,y,w,h,picture,action):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         #print(click)
         #print(mouse)
         if x+w > mouse[0] > x and y+h > mouse[1]:
-            pygame.draw.rect(screen, ac,(x,y,w,h))
+            #selected button
+            screen.blit(picture,(x,y,w,h))
             if click[0] == 1:
+                #pressed button
                 print(msg,x,y,w,h)
                 action()
+        #Normal button
         else:
-            pygame.draw.rect(screen, ic,(x,y,w,h))
+            print("no click")
+            pygame.draw.rect(screen, BLUE,(x,y,w,h))
 
         pixelText = pygame.font.Font("BACKTO1982.ttf",20)
         textSurf, textRect = text_objects(msg, pixelText)
@@ -95,9 +106,9 @@ while not done:
         vaild_list = [max(min(x, 255), 0) for x in light_list]       
         return tuple(vaild_list)
     
-    button("START",640, 300, 100, 50, BLUE,highlighter(BLUE),start)
-    button("QUIT",240, 300, 100, 50, RED,highlighter(BLUE),quit)
-    button("LEVEL",400, 300,100,50, RED,highlighter(BLUE),levelSelect)
+    button("START",320, 500, 100, 50, buttonStart,start)
+    #button("QUIT",640, 500, 100, 50, RED,highlighter(BLUE),quit)
+    #button("LEVEL",960, 500,100,50, RED,highlighter(BLUE),levelSelect)
     
 
 

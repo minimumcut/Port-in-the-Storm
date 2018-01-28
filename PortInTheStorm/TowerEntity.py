@@ -1,6 +1,8 @@
 # Import the pygame library and initialise the game engine
 import pygame
 import pytmx
+
+from Constants import PIXEL_RESOLUTION
 from pytmx import load_pygame
 from Sprite import Sprite
 
@@ -19,14 +21,13 @@ class LightEmitter:
          self.angle = angle
          self.out = out
 
-DEFAULT_LIGHT_RECIEVER_ANGLES = []
-DEFAULT_LIGHT_FORWARDER = [LightForwarder(1, 1.0), LightForwarder(2, 1.0), LightForwarder(3, 1.0),
-                           LightForwarder(4, 1.0), LightForwarder(5, 1.0), LightForwarder(6, 1.0),
-                           LightForwarder(7, 1.0), LightForwarder(8, 1.0)]
-DEFAULT_LIGHT_EMITTERS = [LightEmitter(0, 1.0)]
+# these are copied by reference, so we should probs not use them, or if we do, deep copy them
+# DEFAULT_LIGHT_RECIEVER_ANGLES = []
+# DEFAULT_LIGHT_FORWARDER = [LightForwarder(4, 1.0)]
+# DEFAULT_LIGHT_EMITTERS = [LightEmitter(4, 1.0)]
 
 def CreateDefaultEmitterTower(x, y, region_data):
-    towerType = TowerType(DEFAULT_LIGHT_EMITTERS, [], [], 0)
+    towerType = TowerType([LightEmitter(4, 1.0)], [], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated emitter at: " + str(x) + " " +  str(y))
@@ -34,7 +35,7 @@ def CreateDefaultEmitterTower(x, y, region_data):
     return towerEntity
 
 def CreateDefaultForwarderTower(x, y, region_data):
-    towerType = TowerType([], DEFAULT_LIGHT_FORWARDER, [], 0)
+    towerType = TowerType([], [LightForwarder(4, 1.0)], [], 0)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
@@ -42,28 +43,43 @@ def CreateDefaultForwarderTower(x, y, region_data):
     return towerEntity
 
 def CreateDefaultRecieverTower(x, y, region_data):
-    towerType = TowerType([], [], DEFAULT_LIGHT_RECIEVER_ANGLES, 0)
+    towerType = TowerType([], [], [], 0, True)
     towerEntity = TowerEntity(x, y, None, towerType)
     region_data.region_entities.append(towerEntity)
     print("Ceated forwarder at: " +  str(x) + " " +  str(y))
     region_data.region_entities_grid[x][y] = towerEntity
+    # set up ship sprites
+    SetUpShipSprite(x,y,towerEntity)
     return towerEntity
 
+def SetUpShipSprite(x,y, towerEntity):
+    img = pygame.image.load('sprites/ship1.png')
+    # @TODO anthonyluu: remove this after we switch to 64x64
+    smaller_img = pygame.transform.scale(img, (PIXEL_RESOLUTION, PIXEL_RESOLUTION))
+
+    towerEntity.sprite = Sprite(x=x, y=y, frames=[[smaller_img]])
+    towerEntity.sprite.rect.x = x*PIXEL_RESOLUTION;
+    towerEntity.sprite.rect.y = y*PIXEL_RESOLUTION;
+    towerEntity.light_sprite = None;
+
 class TowerType:
-    def __init__(self, light_emitters, light_forwarders, light_recievers, initial_rotation):
+    def __init__(self, light_emitters, light_forwarders, light_recievers, initial_rotation, is_passable=False):
         self.light_recievers = light_recievers
         self.light_emitters = light_emitters
         self.light_forwarders = light_forwarders
         self.initial_rotation = initial_rotation
+        self.is_passable = is_passable
     def rotate_light(self):
         print("rotating light")
         #assuming that everytime this is called, it rotates by 45 degrees clockwise
         for rcv in self.light_recievers:
             rcv.angle = (rcv.angle + 1) % 8
-        for emmitter in self.light_emitters:
-            emmitter.angle = (emmitter.angle + 1) % 8
+        for emitter in self.light_emitters:
+            emitter.angle = (emitter.angle + 1) % 8
+            print("emitter angle: ", emitter.angle)
         for fwd in self.light_forwarders:
             fwd.angle = (fwd.angle + 1) % 8
+            print("fwd angle: ", fwd.angle)
 
 
 class TowerEntity:
@@ -76,8 +92,8 @@ class TowerEntity:
         self.tower_type = tower_type
         # pos is placeholder
         self.sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/tower.png')]])
-        self.sprite.rect.x = x*32
-        self.sprite.rect.y = y*32
+        self.sprite.rect.x = x*PIXEL_RESOLUTION
+        self.sprite.rect.y = y*PIXEL_RESOLUTION
         self.light_sprite = Sprite(x=x, y=y, frames=[[pygame.image.load('sprites/light.png')]], can_rotate=True)
-        self.light_sprite.rect.x = x*32
-        self.light_sprite.rect.y = y*32
+        self.light_sprite.rect.x = x*PIXEL_RESOLUTION
+        self.light_sprite.rect.y = y*PIXEL_RESOLUTION

@@ -6,7 +6,8 @@ def RenderTowers(screen, tower_entities):
 
     for tower_entity in tower_entities:
         sprite_list.add(tower_entity.sprite)
-        sprite_list.add(tower_entity.light_sprite)
+        if tower_entity.light_sprite:
+          sprite_list.add(tower_entity.light_sprite)
 
     # render all the sprites
     sprite_list.draw(screen)
