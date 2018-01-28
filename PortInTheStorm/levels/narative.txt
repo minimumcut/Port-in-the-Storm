@@ -1,0 +1,36 @@
+Text to play before each level:
+
+Tutorial 1:
+Grandfather: *cough* Granddaughter, I need your help. The other tower lights
+are down and I can just see
+
+Granddaughter: Right away!
+
+Grandfather: Wait, *cough* take me with you, you have never done this in a
+storm before!
+
+Granddaughter: It's the same as in a clear night.
+
+Grandfather: Yes, but the stakes are higher, now tell be how to operate
+the projector while we climb.
+
+[Controls]
+
+Tutorial 2:
+Grandfather: I was a sailor long ago, I became a lighthouse keeper after being
+guided to shore by one of these very lighthouses.
+
+Granddaughter: On the Sea Mule?
+
+Grandfather: A dreary but trusty ship, it sailed for many more years than I
+did. But make sure to pass the beam close to the ships. They are powerful
+but very focused and it is easy to miss them.
+
+Tutorial 3:
+Grandfather: Few lighthouses have their own light source out here. It was
+easier to redirect a beam than create a new one.
+
+Granddaughter: According to this log file there should be a passenger ship
+on the other side of that fog bank.
+
+Grandfather: And now we must trust our fellows to guide that ship home.
