@@ -13,13 +13,14 @@ def Parse(filename):
     cmd_lst = []
     with open(filename) as f:
         for line in f:
+            line = line.rstrip('\n')
             if len(line) == 0:
                 continue
             if line[0] == ';':
                 splitln = list(filter(None, line[1:].split(" ")))
 
                 if len(splitln) == 2:
-                    character_cmd = CharacterItem(splitln[0], splitln[1])
+                    character_cmd = CharacterItem("sprites/" + splitln[0], "sprites/" + splitln[1])
                     cmd_lst.append(character_cmd)
                 else:
                     raise MyAssertError("invalid parsing for file character sprites")

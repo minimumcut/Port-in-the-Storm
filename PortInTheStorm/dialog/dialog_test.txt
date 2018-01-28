@@ -1,4 +1,5 @@
 ; char_goose_neutral.png char_goose_neutral.png
-hello
-fun
-adf
+Welcome to port in the storm
+You play as a lighthouse watchman
+and must guide ships to the port
+and they are in a storm
