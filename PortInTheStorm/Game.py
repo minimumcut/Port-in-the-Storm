@@ -253,7 +253,7 @@ class Game:
                     return False
                 if event.key == pygame.K_q or event.key == pygame.K_SPACE:
                     self.ToggleLight()
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.dialog_data.show_dialogue_box:
                     self.advance_dialog()
                 else:

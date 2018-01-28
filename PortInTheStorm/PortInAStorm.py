@@ -8,7 +8,7 @@ from Level import Level
 from Level import LevelProperties
 from pytmx import load_pygame
 
-def main():
+def GameEntry():
     pygame.init()
 
     size = (RESOLUTION_X, RESOLUTION_Y)

@@ -1,4 +1,4 @@
-
+import PortInAStorm
 import sys, pygame, os, time, random
 from math import pi
 
@@ -47,7 +47,7 @@ while not done:
 
 
     def start():
-        pygame.draw.rect(screen,GREEN,[100,100,100,100])
+        PortInAStorm.GameEntry()
         if True:
             print("0")
         #this is a example for main game loop
