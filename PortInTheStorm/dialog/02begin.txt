@@ -1,0 +1,4 @@
+; char_goose_neutral.png char_goose_neutral.png
+[Grandfather] I was a sailor long ago, I became a lighthouse keeper after being guided to shore by one of these very lighthouses.
+[Granddaughter] On the Sea Mule?
+[Grandfather] A dreary but trusty ship, it sailed for many more years than I did. But make sure to pass the beam close to the ships. They are powerful but very focused and it is easy to miss them.

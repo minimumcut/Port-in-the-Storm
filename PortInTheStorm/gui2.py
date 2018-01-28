@@ -2,7 +2,16 @@ import PortInAStorm
 import sys, pygame, os, time, random
 from math import pi
 
-print (os.getcwd())
+#print (os.getcwd())
+
+def InitMusic():
+    playlist = list()
+    playlist.append ("music/PortInTheStormTheme(Moody).wav")
+
+    # play some avante garde music FOREVER (the ride never ends)
+    pygame.mixer.music.load(playlist.pop())  
+    pygame.mixer.music.set_endevent(pygame.USEREVENT)  
+    pygame.mixer.music.play(-1)
 
 # Initialize the game engine
 pygame.init()
@@ -16,6 +25,8 @@ pygame.display.set_caption("Example code for the draw module")
 #Loop until the user clicks the close button.
 done = False
 clock = pygame.time.Clock()
+
+InitMusic()
 
 #Main loop
 while not done:
@@ -49,9 +60,7 @@ while not done:
     def start():
         PortInAStorm.GameEntry()
         if True:
-            print("0")
-        #this is a example for main game loop
-        
+            pass        
     def levelSelect():
         None
 
@@ -65,10 +74,10 @@ while not done:
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         #print(click)
-        print(mouse)
+        #print(mouse)
         if x+w > mouse[0] > x and y+h > mouse[1] > y:
             #hover button
-            print("Hover")
+            #print("Hover")
             screen.blit(pictureHover,(x,y,w,h))
             if click[0] == 1:
                 #pressed button

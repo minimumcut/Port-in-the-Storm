@@ -56,17 +56,6 @@ class Game:
     def __init__(self, level_list):
         self.level_list = level_list
         self.TransitionLevel()
-        self.InitMusic()
-
-
-    def InitMusic(self):
-        playlist = list()
-        playlist.append ("music/debussy.mp3")
-
-        # play some avante garde music FOREVER (the ride never ends)
-        # pygame.mixer.music.load(playlist.pop())  
-        # pygame.mixer.music.set_endevent(pygame.USEREVENT)  
-        # pygame.mixer.music.play(-1)
 
     def TransitionLevel(self):
         if(self.level_list == 0):
@@ -198,7 +187,7 @@ class Game:
 
         text = self.dialog_data.current_dialogue
         color = (0, 0, 0)
-        font = pygame.font.SysFont('Comic Sans MS', 30)
+        font = pygame.font.SysFont('Comic Sans MS', 24)
         rect = pygame.Rect(TEXT_BOX_RECT)
         y = rect.top
         lineSpacing = -2
@@ -299,6 +288,9 @@ class Game:
         self.dialog_data.dialog_cmd_list = self.current_level.loaded_post_level_dialog
         if self.dialog_data.dialog_cmd_list != None:
             self.advance_dialog() 
+        else:
+            self.dialog_finshed()
+            
 
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:

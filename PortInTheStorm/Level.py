@@ -33,8 +33,13 @@ class Level:
     def load(self):
         self.loaded_sprite_map = load_pygame(self.sprite_map)
         self.loaded = True
+        
         if self.post_level_dialog != None:
             self.loaded_post_level_dialog = DialogParser.Parse(self.post_level_dialog)
+        else:
+            self.loaded_post_level_dialog = None
+
         if self.pre_level_dialog != None:
             self.loaded_pre_level_dialog = DialogParser.Parse(self.pre_level_dialog)
-            
+        else:
+            self.loaded_pre_level_dialog = None
