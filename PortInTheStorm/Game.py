@@ -215,6 +215,8 @@ class Game:
 
 
     def render_character_sprite(self, surface):
+        if self.dialog_data.show_dialogue_box:
+            RenderPostFX.RenderScreenMask(surface)
         if self.dialog_data.show_dialogue_box and self.dialog_data.current_left_sprite != None:
            surface.blit(self.dialog_data.current_left_sprite, LEFT_CHARACTER_SPRITE_POS)
 
