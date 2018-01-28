@@ -25,3 +25,8 @@ def RenderScreenMask(screen):
     s = pygame.Surface((RESOLUTION_X,RESOLUTION_Y), pygame.SRCALPHA)
     s.fill((0,0,0,128))
     screen.blit(s, (0,0))
+
+def RenderOpaqueScreenMask(screen):
+    s = pygame.Surface((RESOLUTION_X,RESOLUTION_Y), pygame.SRCALPHA)
+    s.fill((0,0,0,255))
+    screen.blit(s, (0,0))

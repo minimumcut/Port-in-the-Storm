@@ -31,9 +31,11 @@ class RegionData:
         self.region_entities = []
         self.region_beams = []
         self.main_tower = None
-        self.light_on = False
+        self.light_on = True
         self.ships = []
         self.victory = False
+        self.transitioning = False
+        self.transition_countdown = 60
 
 class DialogData:
     def __init__(self):
@@ -72,6 +74,7 @@ class Game:
         self.dialog_data.dialog_cmd_list = self.current_level.loaded_pre_level_dialog
         if self.dialog_data.dialog_cmd_list != None:
             self.advance_dialog() 
+        self.UpdateTowerStates()
 
     # This method iterates over the game map only once to create sprites based on the property 'sprite_type'
     # sprite_types can be:
@@ -114,7 +117,7 @@ class Game:
     def dialog_finshed(self):
         self.hide_dialogue_box()
         if self.region_data.victory:
-            self.TransitionLevel()
+            self.region_data.transitioning = True
     
     def advance_dialog(self):
         if(len(self.dialog_data.dialog_cmd_list) == 0):
@@ -234,10 +237,10 @@ class Game:
                     clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos) and s.can_rotate]
                     # event.button == 1 left click
                     if event.button == 1:
-                        self.RotateClickedSprites(clicked_sprites)
+                        self.RotateClickedSprites(clicked_sprites, False)
                         # event.button == 3 right click
                     elif event.button == 3:
-                        self.RotateClickedSprites(clicked_sprites, False)
+                        self.RotateClickedSprites(clicked_sprites, True)
                     self.UpdateTowerStates()
         return True
 
@@ -258,6 +261,9 @@ class Game:
 
         self.render_character_sprite(screen)        
         self.render_dialogue_box(screen)
+
+        if self.region_data.transitioning:
+            RenderPostFX.RenderOpaqueScreenMask(screen)
 
         pygame.display.flip()
 
@@ -291,7 +297,10 @@ class Game:
         
 
     def GameTick(self):
-        pass
+        if self.region_data.transitioning:
+            self.region_data.transition_countdown = self.region_data.transition_countdown - 1
+            if(self.region_data.transition_countdown <= 0):
+                self.TransitionLevel() 
 
     def GetTowerFromRegionGrid(self, x, y):
         if x >= 0 and x < self.current_level.width and y >= 0 and y < self.current_level.height:
