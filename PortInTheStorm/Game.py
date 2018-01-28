@@ -10,7 +10,7 @@ from Constants import PIXEL_RESOLUTION
 from itertools import repeat
 from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower, TowerType, SetUpShipSprite, SetUpCloudSprite
-
+from Sprite import Sprite as CustomSprite
 
 pygame.font.init()
 
@@ -36,6 +36,12 @@ class RegionData:
         self.victory = False
         self.transitioning = False
         self.transition_countdown = 60
+        self.water_frames = [ \
+            pygame.image.load('sprites/water_tiles/water1.png'), \
+            pygame.image.load('sprites/water_tiles/water2.png'), \
+            pygame.image.load('sprites/water_tiles/water3.png'), \
+            pygame.image.load('sprites/water_tiles/water4.png') \
+        ]
 
 class DialogData:
     def __init__(self):
@@ -51,10 +57,11 @@ class Game:
         self.TransitionLevel()
         self.InitMusic()
 
+
     def InitMusic(self):
         playlist = list()
         playlist.append ("music/debussy.mp3")
-        
+
         # play some avante garde music FOREVER (the ride never ends)
         # pygame.mixer.music.load(playlist.pop())  
         # pygame.mixer.music.set_endevent(pygame.USEREVENT)  
@@ -68,6 +75,7 @@ class Game:
         self.current_level = next_level
         self.region_data = RegionData()
         self.region_data.region_entities_grid = [[None for x in range(self.current_level.width)] for y in range(self.current_level.height)]
+        self.bg_sprites = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
         self.dialog_data = DialogData()
@@ -88,6 +96,22 @@ class Game:
         for layer in game_map.visible_layers:
             for x in range(0, 15):
                 for y in range(0, 15):
+                    wf = [ \
+                        pygame.image.load('sprites/water_tiles/water1.png'), \
+                        pygame.image.load('sprites/water_tiles/water2.png'), \
+                        pygame.image.load('sprites/water_tiles/water3.png'), \
+                        pygame.image.load('sprites/water_tiles/water4.png'), \
+                        pygame.image.load('sprites/water_tiles/water5.png'), \
+                        pygame.image.load('sprites/water_tiles/water6.png'), \
+                        pygame.image.load('sprites/water_tiles/water7.png'), \
+                        pygame.image.load('sprites/water_tiles/water8.png'), \
+                        pygame.image.load('sprites/water_tiles/water9.png'), \
+                        pygame.image.load('sprites/water_tiles/water10.png'), \
+                    ]
+                    bg_sprite = CustomSprite(x, y, frames=[wf])
+                    bg_sprite.rect.x = x*PIXEL_RESOLUTION
+                    bg_sprite.rect.y = y*PIXEL_RESOLUTION
+                    self.bg_sprites.add(bg_sprite)
                     properties = game_map.get_tile_properties(x, y, 0)
                     if properties:
                         if properties['sprite_type'] == "lighthouse":
@@ -113,7 +137,8 @@ class Game:
                             SetUpCloudSprite(x,y,towerEntity)
                             self.all_sprites.add(towerEntity.sprite)
                             continue
-    
+
+
     def dialog_finshed(self):
         self.hide_dialogue_box()
         if self.region_data.victory:
@@ -252,6 +277,7 @@ class Game:
                         pygame_surface = game_map.get_tile_image(x, y, 0)
                         screen.blit(pygame_surface, (PIXEL_RESOLUTION*x, PIXEL_RESOLUTION*y))
 
+        self.bg_sprites.draw(screen)
 
         TowerEntityRenderer.RenderTowers(screen, self.region_data.region_entities)
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
