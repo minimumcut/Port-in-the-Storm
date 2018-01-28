@@ -30,7 +30,6 @@ class Sprite(pygame.sprite.Sprite):
         if not self.can_rotate:
             return
         self.angle = (self.angle + angle) % 360
-        print("sprite angle: ", self.angle)
         new_frames = []
         for frame in self.frames[0]:
             new_frames.append(self.rotate_along_center(frame, self.angle))
