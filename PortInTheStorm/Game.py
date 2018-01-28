@@ -9,6 +9,11 @@ from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
 from itertools import repeat
 
+pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
+DIALOGUE_BOX_RECT = (80, 500, 1120, 150)
+TEXT_BOX_RECT = (120, 520, 1000, 110)
+
 class Coord:
     def __init__(self, x, y):
         self.x = x
@@ -74,6 +79,39 @@ class Game:
             sprite.rotate_frames(-45)
             self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
 
+    def show_dialogue_box(self, surface, text):
+        pygame.draw.rect(surface, (255,255,255), DIALOGUE_BOX_RECT)
+
+        color = (0, 0, 0)
+        font = myfont
+        rect = pygame.Rect(TEXT_BOX_RECT)
+        y = rect.top
+        aa= False
+        bkg= None
+        lineSpacing = -2
+
+        fontHeight = font.size("Comic Sans MS")[1]
+        while text:
+            i = 1
+            if y + fontHeight > rect.bottom:
+                break
+            while font.size(text[:i])[0] < rect.width and i < len(text):
+                i += 1
+            if i < len(text): 
+                i = text.rfind(" ", 0, i) + 1
+            if bkg:
+                image = font.render(text[:i], 1, color, bkg)
+                image.set_colorkey(bkg)
+            else:
+                image = font.render(text[:i], aa, color)
+            surface.blit(image, (rect.left, y))
+            y += fontHeight + lineSpacing
+            text = text[i:]
+        return text
+
+
+
+
     # Returns false
     def HandleInputEvents(self):
         for event in pygame.event.get():
@@ -107,6 +145,9 @@ class Game:
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
         RenderPostFX.RenderVignette(screen)
+        
+        self.show_dialogue_box(screen, "Wow this text is so cool lol!  And it even wraps holy shit hahahaha wow omg wtf")
+
         pygame.display.flip()
 
     
