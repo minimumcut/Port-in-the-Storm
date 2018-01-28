@@ -24,6 +24,10 @@ class RegionData:
         self.region_entities = []
         self.region_beams = []
 
+class DialogData:
+    def __init__(self):
+        self.shown_dialogue = None
+
 class Game:
     def __init__(self, initial_level):
         print("Loading level " + initial_level.level_properties.level_name)
@@ -68,8 +72,13 @@ class Game:
                             towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
                             self.all_sprites.add(towerEntity.sprite)
                             continue
+    def set_dialogue():
+        pass
 
-    def show_dialogue_box(self, surface, text):
+    def hide_dialogue_box():
+        pass
+
+    def render_dialogue_box(self, surface):
         pygame.draw.rect(surface, (255,255,255), DIALOGUE_BOX_RECT)
 
         color = (0, 0, 0)
@@ -132,7 +141,7 @@ class Game:
 
         RenderPostFX.RenderVignette(screen)
         
-        self.show_dialogue_box(screen, "Wow this text is so cool lol!  And it even wraps holy shit hahahaha wow omg wtf")
+        #self.render_dialogue_box(screen)
 
         pygame.display.flip()
 
