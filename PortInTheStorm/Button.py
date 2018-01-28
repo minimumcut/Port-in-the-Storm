@@ -7,7 +7,7 @@ class Button:
         click = pygame.mouse.get_pressed()
         #print(click)
         #print(mouse)
-        if x+w > mouse[0] > x and y+h > mouse[1]:
+        if x+w > mouse[0] > x and y+h > mouse[1] > y:
             #Hover button
             screen.blit(pictureHover,(x,y,w,h))
             if click[0] == 1:
