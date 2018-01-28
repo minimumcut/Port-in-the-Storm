@@ -5,14 +5,20 @@ import RenderPostFX
 import BeamRenderer
 import Beam
 import TowerEntityRenderer
+import DialogParser
 from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
 from itertools import repeat
 
+
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
+goose = pygame.image.load("sprites/char_goose_neutral.png")
+
 DIALOGUE_BOX_RECT = (80, 500, 1120, 150)
 TEXT_BOX_RECT = (120, 520, 1000, 110)
+LEFT_CHARACTER_SPRITE_POS = (120, 300) 
+RIGHT_CHARACTER_SPRITE_POS = (800, 300) 
 
 class Coord:
     def __init__(self, x, y):
@@ -27,7 +33,10 @@ class RegionData:
 
 class DialogData:
     def __init__(self):
-        self.shown_dialogue = None
+        self.current_left_sprite = None
+        self.current_right_sprite = None
+        self.show_dialogue_box = False
+        self.current_dialogue = "HA"
 
 class Game:
     def __init__(self, initial_level):
@@ -42,6 +51,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
         self.UpdateTowerStates()
+        self.dialog_data = DialogData()
 
     def TransitionToLevel(next_level):
         print("Loading level " + next_level.level_properties.level_name)
@@ -50,6 +60,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.initialize_lighthouses()
         self.UpdateTowerStates()
+        self.dialog_data = DialogData()
 
     # This method iterates over the game map only once to create sprites based on the property 'sprite_type'
     # sprite_types can be:
@@ -89,14 +100,15 @@ class Game:
             self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
 
     def render_dialogue_box(self, surface):
+        if not self.dialog_data.show_dialogue_box:
+            return
         pygame.draw.rect(surface, (255,255,255), DIALOGUE_BOX_RECT)
 
+        text = self.dialog_data.current_dialogue
         color = (0, 0, 0)
-        font = myfont
+        font = pygame.font.SysFont('Comic Sans MS', 30)
         rect = pygame.Rect(TEXT_BOX_RECT)
         y = rect.top
-        aa= False
-        bkg= None
         lineSpacing = -2
 
         fontHeight = font.size("Comic Sans MS")[1]
@@ -108,19 +120,20 @@ class Game:
                 i += 1
             if i < len(text): 
                 i = text.rfind(" ", 0, i) + 1
-            if bkg:
-                image = font.render(text[:i], 1, color, bkg)
-                image.set_colorkey(bkg)
-            else:
-                image = font.render(text[:i], aa, color)
+            image = font.render(text[:i], False, color)
             surface.blit(image, (rect.left, y))
             y += fontHeight + lineSpacing
             text = text[i:]
         return text
 
-
-
-
+    def render_character_sprite(self, surface):
+        if self.dialog_data.current_left_sprite != None:
+           surface.blit(goose, LEFT_CHARACTER_SPRITE_POS)
+        
+        if self.dialog_data.current_right_sprite != None:
+           surface.blit(goose, Right_CHARACTER_SPRITE_POS)
+       
+        
     # Returns false
     def HandleInputEvents(self):
         for event in pygame.event.get():
@@ -131,7 +144,7 @@ class Game:
                 if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                     return False
                 if event.key == pygame.K_w:
-                    print("w pressed")
+                    self.dialog_data.show_dialogue_box = not self.dialog_data.show_dialogue_box
                 if event.key == pygame.K_a:
                     print("w pressed")
             if event.type == pygame.MOUSEBUTTONUP:
@@ -155,7 +168,8 @@ class Game:
 
         RenderPostFX.RenderVignette(screen)
         
-        #self.render_dialogue_box(screen)
+        self.render_dialogue_box(screen)
+        self.render_character_sprite(screen)
 
         pygame.display.flip()
 
@@ -205,8 +219,6 @@ class Game:
                     intersect = self.DetermineBeamIntersect(x, y, forwarder.angle)
                     self.OnIntersect(tower, intersect, forwarder.angle)
             
-
-
     def DetermineBeamIntersect(self, x, y, direction):
         dx = 0
         dy = 0
