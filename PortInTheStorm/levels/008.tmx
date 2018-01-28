@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="64" tileheight="64" infinite="0" nextobjectid="1">
+ <tileset firstgid="1" source="../tileset/fog1.tsx"/>
+ <tileset firstgid="2" source="../tileset/LH1.tsx"/>
+ <tileset firstgid="3" source="../tileset/LHMain.tsx"/>
+ <tileset firstgid="12" source="../tileset/ship1.tsx"/>
+ <tileset firstgid="13" source="../tileset/water1.tsx"/>
+ <layer name="Tile Layer 1" width="15" height="11">
+  <data encoding="csv">
+2,13,13,13,13,13,13,13,13,13,13,12,1,1,1,
+13,13,1,1,1,1,13,1,1,1,13,1,13,1,1,
+13,1,13,1,1,1,13,1,1,2,13,1,1,13,1,
+13,1,1,13,1,1,13,1,12,2,13,1,13,1,2,
+13,1,1,1,13,1,13,12,1,13,13,13,1,1,13,
+13,13,13,13,13,7,13,13,13,13,13,13,13,13,12,
+13,1,1,1,1,13,13,1,1,1,13,13,1,1,13,
+13,1,1,1,13,1,13,13,1,2,13,1,13,1,13,
+13,1,1,13,13,1,13,1,2,1,13,1,1,13,13,
+13,1,13,1,1,1,13,1,1,2,13,1,1,1,2,
+2,2,13,13,13,13,13,13,13,13,13,1,1,13,1
+</data>
+ </layer>
+</map>
