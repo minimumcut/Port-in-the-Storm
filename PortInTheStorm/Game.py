@@ -4,6 +4,7 @@ import pytmx
 import RenderPostFX
 import BeamRenderer
 import Beam
+import TowerEntityRenderer
 from pytmx import load_pygame
 from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, CreateDefaultRecieverTower
 from itertools import repeat
@@ -67,16 +68,25 @@ class Game:
                         if properties['sprite_type'] == "lighthouse":
                             towerEntity = CreateDefaultForwarderTower(x, y, self.region_data)
                             self.all_sprites.add(towerEntity.sprite)
+                            self.all_sprites.add(towerEntity.light_sprite)
                             continue
                         if properties['sprite_type'] == "main":
                             towerEntity = CreateDefaultEmitterTower(x, y, self.region_data)
                             self.all_sprites.add(towerEntity.sprite)
+                            self.all_sprites.add(towerEntity.light_sprite)
                             continue
     def set_dialogue():
         pass
 
     def hide_dialogue_box():
         pass
+
+    def RotateClickedSprites(self, clicked_sprites):
+        print("rotating clicked sprites", len(clicked_sprites))
+        for sprite in clicked_sprites:
+            # rotates the sprite, and also updates the tower type's to point in the right direction
+            sprite.rotate_frames(-45)
+            self.region_data.region_entities_grid[sprite.x][sprite.y].tower_type.rotate_light()
 
     def render_dialogue_box(self, surface):
         pygame.draw.rect(surface, (255,255,255), DIALOGUE_BOX_RECT)
@@ -110,6 +120,7 @@ class Game:
 
 
 
+
     # Returns false
     def HandleInputEvents(self):
         for event in pygame.event.get():
@@ -123,6 +134,11 @@ class Game:
                     print("w pressed")
                 if event.key == pygame.K_a:
                     print("w pressed")
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                # @TODO anthonyluu: need to add another condition here to filter for only lighting sprites
+                clicked_sprites = [s for s in self.all_sprites if s.rect.collidepoint(pos)]
+                self.RotateClickedSprites(clicked_sprites)
         return True
 
     def Render(self, screen):
@@ -133,10 +149,8 @@ class Game:
                         pygame_surface = game_map.get_tile_image(x, y, 0)
                         screen.blit(pygame_surface, (32*x, 32*y))
 
-        # render all the sprites
-        self.all_sprites.draw(screen)
 
-        #import pdb; pdb.set_trace()
+        TowerEntityRenderer.RenderTowers(screen, self.region_data.region_entities)
         BeamRenderer.RenderBeams(screen, self.region_data.region_beams)
 
         RenderPostFX.RenderVignette(screen)
