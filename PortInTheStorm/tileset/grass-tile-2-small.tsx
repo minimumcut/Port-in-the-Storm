@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="grass-tile-2-small" tilewidth="64" tileheight="64" tilecount="20" columns="6">
- <image source="tileset/grass-tiles-2-small.png" width="384" height="192"/>
+<tileset name="grass-tile-2-small" tilewidth="64" tileheight="64" tilecount="19" columns="6">
+ <image source="grass-tiles-2-small.png" width="384" height="192"/>
  <tile id="2">
   <properties>
    <property name="sprite_type" value="main"/>
