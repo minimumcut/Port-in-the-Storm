@@ -14,8 +14,6 @@ from TowerEntity import CreateDefaultEmitterTower, CreateDefaultForwarderTower, 
 
 pygame.font.init()
 
-goose = pygame.image.load("sprites/char_goose_neutral.png")
-
 DIALOGUE_BOX_RECT = (80, 500, 1120, 150)
 TEXT_BOX_RECT = (120, 520, 1000, 110)
 LEFT_CHARACTER_SPRITE_POS = (120, 300) 
@@ -212,7 +210,7 @@ class Game:
            surface.blit(self.dialog_data.current_left_sprite, LEFT_CHARACTER_SPRITE_POS)
 
         if self.dialog_data.show_dialogue_box and self.dialog_data.current_right_sprite != None:
-           surface.blit(self.dialog_data.current_left_sprite, RIGHT_CHARACTER_SPRITE_POS)
+           surface.blit(self.dialog_data.current_right_sprite, RIGHT_CHARACTER_SPRITE_POS)
 
     # Returns false
     def HandleInputEvents(self):

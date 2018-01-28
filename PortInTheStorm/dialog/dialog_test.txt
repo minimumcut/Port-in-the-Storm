@@ -1,5 +1,6 @@
 ; char_goose_neutral.png char_goose_neutral.png
 Welcome to port in the storm
 You play as a lighthouse watchman
+; cat.png char_goose_neutral.png
 and must guide ships to the port
-and they are in a storm
+and they are in a storm yes
