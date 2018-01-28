@@ -1,0 +1,6 @@
+; char_goose_neutral.png char_goose_neutral.png
+[Grandfather]: *cough* Granddaughter, I need your help. The other tower lights are down and I can just see.
+[Granddaughter]: Right away!
+[Grandfather]: Wait, *cough* take me with you, you have never done this in a storm before!
+[Granddaughter]: It's the same as in a clear night.
+[Grandfather]: Yes, but the stakes are higher, now tell be how to operate the projector while we climb.

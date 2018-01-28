@@ -198,7 +198,7 @@ class Game:
 
         text = self.dialog_data.current_dialogue
         color = (0, 0, 0)
-        font = pygame.font.SysFont('Comic Sans MS', 30)
+        font = pygame.font.SysFont('Comic Sans MS', 24)
         rect = pygame.Rect(TEXT_BOX_RECT)
         y = rect.top
         lineSpacing = -2
@@ -299,6 +299,9 @@ class Game:
         self.dialog_data.dialog_cmd_list = self.current_level.loaded_post_level_dialog
         if self.dialog_data.dialog_cmd_list != None:
             self.advance_dialog() 
+        else:
+            self.dialog_finshed()
+            
 
     def CheckIfAllShipsPowered(self):
         for ship in self.region_data.ships:
