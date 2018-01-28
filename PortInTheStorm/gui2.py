@@ -2,7 +2,7 @@ import PortInAStorm
 import sys, pygame, os, time, random
 from math import pi
 
-print (os.getcwd())
+#print (os.getcwd())
 
 # Initialize the game engine
 pygame.init()
@@ -49,9 +49,7 @@ while not done:
     def start():
         PortInAStorm.GameEntry()
         if True:
-            print("0")
-        #this is a example for main game loop
-        
+            pass        
     def levelSelect():
         None
 
@@ -65,10 +63,10 @@ while not done:
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         #print(click)
-        print(mouse)
+        #print(mouse)
         if x+w > mouse[0] > x and y+h > mouse[1] > y:
             #hover button
-            print("Hover")
+            #print("Hover")
             screen.blit(pictureHover,(x,y,w,h))
             if click[0] == 1:
                 #pressed button
